@@ -4,15 +4,39 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private static GameManager instance;
+    public static GameManager Instance
     {
-        
+        get => instance;
     }
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField] private GameObject gamePanelCanvas;
+
+    // ACTIVATES ON GAME STATE BEING TOGGLED
+    public bool inGame;
+
+    private void Awake()
     {
-        
+        if (instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+
+    private void Start()
+    {
+        //gamePanelCanvas.SetActive(false);
+    }
+
+    public void TogglePanel()
+    {
+        gamePanelCanvas.SetActive(gamePanelCanvas.activeInHierarchy ? false : true) ;
     }
 }
+
+

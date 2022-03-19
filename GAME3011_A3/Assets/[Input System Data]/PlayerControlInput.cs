@@ -127,6 +127,15 @@ public partial class @PlayerControlInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ReturnToPlayer"",
+                    ""type"": ""Button"",
+                    ""id"": ""c61b7359-2a9c-43ff-af24-c85e464b1308"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -138,6 +147,17 @@ public partial class @PlayerControlInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Mouse & Keyboard"",
                     ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4085edb1-91f3-4e9d-9898-8d187ba94a34"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse & Keyboard"",
+                    ""action"": ""ReturnToPlayer"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -170,6 +190,7 @@ public partial class @PlayerControlInput : IInputActionCollection2, IDisposable
         // Minigame
         m_Minigame = asset.FindActionMap("Minigame", throwIfNotFound: true);
         m_Minigame_Select = m_Minigame.FindAction("Select", throwIfNotFound: true);
+        m_Minigame_ReturnToPlayer = m_Minigame.FindAction("ReturnToPlayer", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -271,11 +292,13 @@ public partial class @PlayerControlInput : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Minigame;
     private IMinigameActions m_MinigameActionsCallbackInterface;
     private readonly InputAction m_Minigame_Select;
+    private readonly InputAction m_Minigame_ReturnToPlayer;
     public struct MinigameActions
     {
         private @PlayerControlInput m_Wrapper;
         public MinigameActions(@PlayerControlInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Select => m_Wrapper.m_Minigame_Select;
+        public InputAction @ReturnToPlayer => m_Wrapper.m_Minigame_ReturnToPlayer;
         public InputActionMap Get() { return m_Wrapper.m_Minigame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -288,6 +311,9 @@ public partial class @PlayerControlInput : IInputActionCollection2, IDisposable
                 @Select.started -= m_Wrapper.m_MinigameActionsCallbackInterface.OnSelect;
                 @Select.performed -= m_Wrapper.m_MinigameActionsCallbackInterface.OnSelect;
                 @Select.canceled -= m_Wrapper.m_MinigameActionsCallbackInterface.OnSelect;
+                @ReturnToPlayer.started -= m_Wrapper.m_MinigameActionsCallbackInterface.OnReturnToPlayer;
+                @ReturnToPlayer.performed -= m_Wrapper.m_MinigameActionsCallbackInterface.OnReturnToPlayer;
+                @ReturnToPlayer.canceled -= m_Wrapper.m_MinigameActionsCallbackInterface.OnReturnToPlayer;
             }
             m_Wrapper.m_MinigameActionsCallbackInterface = instance;
             if (instance != null)
@@ -295,6 +321,9 @@ public partial class @PlayerControlInput : IInputActionCollection2, IDisposable
                 @Select.started += instance.OnSelect;
                 @Select.performed += instance.OnSelect;
                 @Select.canceled += instance.OnSelect;
+                @ReturnToPlayer.started += instance.OnReturnToPlayer;
+                @ReturnToPlayer.performed += instance.OnReturnToPlayer;
+                @ReturnToPlayer.canceled += instance.OnReturnToPlayer;
             }
         }
     }
@@ -316,5 +345,6 @@ public partial class @PlayerControlInput : IInputActionCollection2, IDisposable
     public interface IMinigameActions
     {
         void OnSelect(InputAction.CallbackContext context);
+        void OnReturnToPlayer(InputAction.CallbackContext context);
     }
 }
