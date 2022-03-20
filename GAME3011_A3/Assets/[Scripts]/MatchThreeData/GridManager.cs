@@ -26,7 +26,30 @@ public class GridManager : MonoBehaviour
     private bool inverse = false; // diagonal falling check, will see if the block falls one way or the other 
                                   // potential that more than 1 piece can fill an empty space
                                   // swap the direction tiles can fall down
+
+    // Mouse events, when we click, we hold a reference to the piece
+    private BasePiece selectedPiece;
+    private BasePiece lastEnteredPiece;
+
     private Dictionary<PieceTypeEnum, GameObject> piecePrefabDictionary;
+
+    private void PlaceBlocks()
+    {
+        Destroy(gamePieces[4, 4].gameObject);
+        SpawnPiece(4, 4, PieceTypeEnum.BLOCK); 
+
+        Destroy(gamePieces[8, 4].gameObject);
+        SpawnPiece(8, 4, PieceTypeEnum.BLOCK); 
+
+        Destroy(gamePieces[5, 5].gameObject);
+        SpawnPiece(5, 5, PieceTypeEnum.BLOCK); 
+
+        Destroy(gamePieces[0, 0].gameObject);
+        SpawnPiece(0, 0, PieceTypeEnum.BLOCK);
+
+        Destroy(gamePieces[2, 9].gameObject);
+        SpawnPiece(2, 9, PieceTypeEnum.BLOCK);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -64,9 +87,9 @@ public class GridManager : MonoBehaviour
             }
         }
 
+        // placing obbstacles
+        PlaceBlocks();
 
-        Destroy(gamePieces[4, 4].gameObject);
-        SpawnPiece(4, 4, PieceTypeEnum.BLOCK);
         StartCoroutine(Fill());
     }
 
@@ -206,5 +229,46 @@ public class GridManager : MonoBehaviour
         Vector2 GridPos = new Vector2(transform.position.x - ((gridX / 2) * spriteDimension) + x * spriteDimension,
                                       transform.position.y - ((gridY / 2) * spriteDimension) + y * spriteDimension);
         return GridPos;
+    }
+
+    public bool adjacentPiece(BasePiece p1, BasePiece p2)
+    {
+        return (p1.XPos == p2.XPos && (int)Mathf.Abs(p1.YPos - p2.YPos) == 1// check if y coordinates are within 1 space of each other
+            || (p1.YPos == p1.YPos && (int)Mathf.Abs(p1.XPos - p2.YPos) == 1)); // check if x coordinates are 1 space away within each other 
+    }
+
+    public void SwapPieces(BasePiece p1, BasePiece p2)
+    {
+        if (p1.isMovable() && p2.isMovable())
+        {
+            gamePieces[p1.XPos, p1.YPos] = p2;
+            gamePieces[p2.XPos, p2.YPos] = p1;
+
+            int p1XPos = p1.XPos;
+            int p1YPos = p1.YPos;
+
+            p1.MovablePiece.MovePiece(p2.XPos, p2.YPos, fillTime);
+            p2.MovablePiece.MovePiece(p1XPos, p1YPos, fillTime);
+        }
+    }
+
+    // Mouse Interaction Events
+    public void PressPiece(BasePiece pieceSelect)
+    {
+        selectedPiece = pieceSelect;
+    }
+
+    public void HoverPiece(BasePiece enteredPiece)
+    {
+        lastEnteredPiece = enteredPiece;
+    }
+
+    public void ReleasePiece()
+    {
+        if (adjacentPiece(selectedPiece, lastEnteredPiece))
+        {
+            SwapPieces(selectedPiece, lastEnteredPiece);
+        }
+
     }
 }

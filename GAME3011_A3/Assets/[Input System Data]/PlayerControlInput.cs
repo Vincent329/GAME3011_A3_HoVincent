@@ -120,18 +120,27 @@ public partial class @PlayerControlInput : IInputActionCollection2, IDisposable
             ""id"": ""393f1e8c-e4b1-43a0-a875-053830993d64"",
             ""actions"": [
                 {
-                    ""name"": ""Select"",
+                    ""name"": ""ReturnToPlayer"",
                     ""type"": ""Button"",
-                    ""id"": ""e5289a8a-18a8-46b5-8063-78fa7a20b5e6"",
+                    ""id"": ""c61b7359-2a9c-43ff-af24-c85e464b1308"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""ReturnToPlayer"",
-                    ""type"": ""Button"",
-                    ""id"": ""c61b7359-2a9c-43ff-af24-c85e464b1308"",
+                    ""name"": ""Point"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""f4ea59d6-0d60-4bce-922a-9d648cae481a"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""14d7f031-df7a-4930-acc8-c083e389f856"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -141,23 +150,45 @@ public partial class @PlayerControlInput : IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""4d996540-35f0-4242-aaa1-33b3776ad6ce"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Mouse & Keyboard"",
-                    ""action"": ""Select"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""4085edb1-91f3-4e9d-9898-8d187ba94a34"",
                     ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Mouse & Keyboard"",
                     ""action"": ""ReturnToPlayer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ec0b58c3-3211-4985-a58c-4bbb16dc043b"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse & Keyboard"",
+                    ""action"": ""Point"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f20dd3ab-43f3-40a6-b148-4c3c0537f12b"",
+                    ""path"": ""<Pen>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse & Keyboard"",
+                    ""action"": ""Point"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e58cbf70-e24a-403f-a5ea-cb80e27802da"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse & Keyboard"",
+                    ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -189,8 +220,9 @@ public partial class @PlayerControlInput : IInputActionCollection2, IDisposable
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         // Minigame
         m_Minigame = asset.FindActionMap("Minigame", throwIfNotFound: true);
-        m_Minigame_Select = m_Minigame.FindAction("Select", throwIfNotFound: true);
         m_Minigame_ReturnToPlayer = m_Minigame.FindAction("ReturnToPlayer", throwIfNotFound: true);
+        m_Minigame_Point = m_Minigame.FindAction("Point", throwIfNotFound: true);
+        m_Minigame_Click = m_Minigame.FindAction("Click", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -291,14 +323,16 @@ public partial class @PlayerControlInput : IInputActionCollection2, IDisposable
     // Minigame
     private readonly InputActionMap m_Minigame;
     private IMinigameActions m_MinigameActionsCallbackInterface;
-    private readonly InputAction m_Minigame_Select;
     private readonly InputAction m_Minigame_ReturnToPlayer;
+    private readonly InputAction m_Minigame_Point;
+    private readonly InputAction m_Minigame_Click;
     public struct MinigameActions
     {
         private @PlayerControlInput m_Wrapper;
         public MinigameActions(@PlayerControlInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Select => m_Wrapper.m_Minigame_Select;
         public InputAction @ReturnToPlayer => m_Wrapper.m_Minigame_ReturnToPlayer;
+        public InputAction @Point => m_Wrapper.m_Minigame_Point;
+        public InputAction @Click => m_Wrapper.m_Minigame_Click;
         public InputActionMap Get() { return m_Wrapper.m_Minigame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -308,22 +342,28 @@ public partial class @PlayerControlInput : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_MinigameActionsCallbackInterface != null)
             {
-                @Select.started -= m_Wrapper.m_MinigameActionsCallbackInterface.OnSelect;
-                @Select.performed -= m_Wrapper.m_MinigameActionsCallbackInterface.OnSelect;
-                @Select.canceled -= m_Wrapper.m_MinigameActionsCallbackInterface.OnSelect;
                 @ReturnToPlayer.started -= m_Wrapper.m_MinigameActionsCallbackInterface.OnReturnToPlayer;
                 @ReturnToPlayer.performed -= m_Wrapper.m_MinigameActionsCallbackInterface.OnReturnToPlayer;
                 @ReturnToPlayer.canceled -= m_Wrapper.m_MinigameActionsCallbackInterface.OnReturnToPlayer;
+                @Point.started -= m_Wrapper.m_MinigameActionsCallbackInterface.OnPoint;
+                @Point.performed -= m_Wrapper.m_MinigameActionsCallbackInterface.OnPoint;
+                @Point.canceled -= m_Wrapper.m_MinigameActionsCallbackInterface.OnPoint;
+                @Click.started -= m_Wrapper.m_MinigameActionsCallbackInterface.OnClick;
+                @Click.performed -= m_Wrapper.m_MinigameActionsCallbackInterface.OnClick;
+                @Click.canceled -= m_Wrapper.m_MinigameActionsCallbackInterface.OnClick;
             }
             m_Wrapper.m_MinigameActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Select.started += instance.OnSelect;
-                @Select.performed += instance.OnSelect;
-                @Select.canceled += instance.OnSelect;
                 @ReturnToPlayer.started += instance.OnReturnToPlayer;
                 @ReturnToPlayer.performed += instance.OnReturnToPlayer;
                 @ReturnToPlayer.canceled += instance.OnReturnToPlayer;
+                @Point.started += instance.OnPoint;
+                @Point.performed += instance.OnPoint;
+                @Point.canceled += instance.OnPoint;
+                @Click.started += instance.OnClick;
+                @Click.performed += instance.OnClick;
+                @Click.canceled += instance.OnClick;
             }
         }
     }
@@ -344,7 +384,8 @@ public partial class @PlayerControlInput : IInputActionCollection2, IDisposable
     }
     public interface IMinigameActions
     {
-        void OnSelect(InputAction.CallbackContext context);
         void OnReturnToPlayer(InputAction.CallbackContext context);
+        void OnPoint(InputAction.CallbackContext context);
+        void OnClick(InputAction.CallbackContext context);
     }
 }

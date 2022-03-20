@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class BasePiece : MonoBehaviour
+public class BasePiece : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerClickHandler
 {
 
     [SerializeField] private int xPos;
     [SerializeField] private int yPos;
+    [SerializeField] private bool isHovered;
 
     public int XPos
     {
@@ -56,13 +59,6 @@ public class BasePiece : MonoBehaviour
         
     }
 
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void Initialize(int x, int y, GridManager _gridRef, PieceTypeEnum pieceType)
     {
         xPos = x;
@@ -70,6 +66,34 @@ public class BasePiece : MonoBehaviour
         gridRef = _gridRef;
         type = pieceType;
     }
+
+    public void OnPointerEnter(PointerEventData evt)
+    {
+        Debug.Log("Enter " + XPos + "," + YPos);
+        gridRef.HoverPiece(this);
+        isHovered = true;
+    }
+    public void OnPointerExit(PointerEventData evt)
+    {
+        isHovered = false;
+    }
+
+    public void OnPointerClick(PointerEventData evt)
+    {
+        Debug.Log("Click");
+    }
+
+    public void OnPointerDown(PointerEventData evt)
+    {
+        Debug.Log("Clicked on Piece: " + XPos + "," + YPos);
+        gridRef.PressPiece(this);
+    }
+
+    public void OnPointerUp(PointerEventData evt)
+    {
+        gridRef.ReleasePiece();
+    }
+
 
     public bool isMovable()
     {

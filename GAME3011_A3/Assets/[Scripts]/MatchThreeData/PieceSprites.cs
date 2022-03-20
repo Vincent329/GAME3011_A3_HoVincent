@@ -45,7 +45,9 @@ public class PieceSprites : MonoBehaviour
 
     private void Awake()
     {
-        sprite = transform.GetChild(0).GetComponent<Image>();
+        sprite = GetComponent<Image>();
+        if (sprite != null)
+            Debug.Log("HasSprite");
 
         diamondSpriteDictionary = new Dictionary<DiamondType, Sprite>();
         for (int i = 0; i < diamondSprites.Count; i++)

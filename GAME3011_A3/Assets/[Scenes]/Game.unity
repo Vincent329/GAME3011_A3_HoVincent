@@ -359,6 +359,8 @@ MonoBehaviour:
     prefab: {fileID: 2187995396800165784, guid: 59318c3288208254aa0ada6adddd7c94, type: 3}
   - type: 1
     prefab: {fileID: 8426557538054224958, guid: 1dd94134ab3add44c9e16d4422abac2f, type: 3}
+  - type: 2
+    prefab: {fileID: 2153976108231276817, guid: 3be320d6501602e4dabad6f61888dd47, type: 3}
   backgroundSprite: {fileID: 906891485910633634, guid: 64e03203c3d4d3a419d37dc4b3e28eb5, type: 3}
 --- !u!1 &684676561
 GameObject:
@@ -1611,12 +1613,12 @@ MonoBehaviour:
     m_ActionName: Player/Interact[/Keyboard/e]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: e5289a8a-18a8-46b5-8063-78fa7a20b5e6
-    m_ActionName: Minigame/Select[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: c61b7359-2a9c-43ff-af24-c85e464b1308
     m_ActionName: Minigame/ReturnToGame[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f4ea59d6-0d60-4bce-922a-9d648cae481a
+    m_ActionName: Minigame/MouseLocation[/Mouse/position]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Minigame
@@ -1699,11 +1701,11 @@ MonoBehaviour:
   m_MoveRepeatRate: 0.1
   m_XRTrackingOrigin: {fileID: 0}
   m_ActionsAsset: {fileID: -944628639613478452, guid: d429a007fca118040bea34106061eab4, type: 3}
-  m_PointAction: {fileID: 0}
+  m_PointAction: {fileID: -5635953834160624568, guid: d429a007fca118040bea34106061eab4, type: 3}
   m_MoveAction: {fileID: 0}
   m_SubmitAction: {fileID: 0}
   m_CancelAction: {fileID: 0}
-  m_LeftClickAction: {fileID: 0}
+  m_LeftClickAction: {fileID: 7535448798591821092, guid: d429a007fca118040bea34106061eab4, type: 3}
   m_MiddleClickAction: {fileID: 0}
   m_RightClickAction: {fileID: 0}
   m_ScrollWheelAction: {fileID: 0}

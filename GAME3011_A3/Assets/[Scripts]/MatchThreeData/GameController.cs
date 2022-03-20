@@ -29,6 +29,8 @@ public class GameController : MonoBehaviour
     {
         if (elementIsActive)
         {
+            playerInput.enabled = false;
+            playerInput.enabled = true;
             playerActions.Minigame.ReturnToPlayer.performed += OnReturnToPlayer;
             playerActions.Minigame.ReturnToPlayer.canceled += OnReturnToPlayer;
         }
@@ -47,5 +49,10 @@ public class GameController : MonoBehaviour
         GameManager.Instance.TogglePanel();
 
         InputManager.ToggleActionMap(playerActions.Player);
+    }
+
+    private void OnMouseLocation(InputAction.CallbackContext obj)
+    {
+
     }
 }

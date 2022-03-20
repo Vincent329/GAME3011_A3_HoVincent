@@ -98,18 +98,27 @@
             "id": "393f1e8c-e4b1-43a0-a875-053830993d64",
             "actions": [
                 {
-                    "name": "Select",
+                    "name": "ReturnToPlayer",
                     "type": "Button",
-                    "id": "e5289a8a-18a8-46b5-8063-78fa7a20b5e6",
+                    "id": "c61b7359-2a9c-43ff-af24-c85e464b1308",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
                 },
                 {
-                    "name": "ReturnToPlayer",
-                    "type": "Button",
-                    "id": "c61b7359-2a9c-43ff-af24-c85e464b1308",
+                    "name": "Point",
+                    "type": "PassThrough",
+                    "id": "f4ea59d6-0d60-4bce-922a-9d648cae481a",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Click",
+                    "type": "PassThrough",
+                    "id": "14d7f031-df7a-4930-acc8-c083e389f856",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -119,23 +128,45 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "4d996540-35f0-4242-aaa1-33b3776ad6ce",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Mouse & Keyboard",
-                    "action": "Select",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "4085edb1-91f3-4e9d-9898-8d187ba94a34",
                     "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse & Keyboard",
                     "action": "ReturnToPlayer",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ec0b58c3-3211-4985-a58c-4bbb16dc043b",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse & Keyboard",
+                    "action": "Point",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f20dd3ab-43f3-40a6-b148-4c3c0537f12b",
+                    "path": "<Pen>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse & Keyboard",
+                    "action": "Point",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e58cbf70-e24a-403f-a5ea-cb80e27802da",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse & Keyboard",
+                    "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
