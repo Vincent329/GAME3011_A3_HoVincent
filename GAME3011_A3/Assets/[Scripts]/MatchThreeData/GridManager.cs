@@ -23,7 +23,9 @@ public class GridManager : MonoBehaviour
     private float spriteDimension;
 
     private BasePiece[,] gamePieces;
-
+    private bool inverse = false; // diagonal falling check, will see if the block falls one way or the other 
+                                  // potential that more than 1 piece can fill an empty space
+                                  // swap the direction tiles can fall down
     private Dictionary<PieceTypeEnum, GameObject> piecePrefabDictionary;
 
     // Start is called before the first frame update
@@ -59,10 +61,12 @@ public class GridManager : MonoBehaviour
             for (int j = 0; j < gridY; j++)
             {
                 SpawnPiece(i, j, PieceTypeEnum.EMPTY);
-
             }
         }
 
+
+        Destroy(gamePieces[4, 4].gameObject);
+        SpawnPiece(4, 4, PieceTypeEnum.BLOCK);
         StartCoroutine(Fill());
     }
 
@@ -82,6 +86,7 @@ public class GridManager : MonoBehaviour
     {
         while (FillStep())
         {
+            inverse = !inverse;
             yield return new WaitForSeconds(fillTime);
         }
     }
@@ -91,8 +96,15 @@ public class GridManager : MonoBehaviour
         // bottom to top check of the grid
         for (int y = 1; y < gridY; y++)
         {
-            for (int x = 0; x < gridX; x++)
+            for (int loopX = 0; loopX < gridX; loopX++)
             {
+                // by default we'll check from 0 to the grid's maximum limit
+                int x = loopX;
+
+                if (inverse)
+                {
+                    x = gridX - 1 - loopX; // if inverse, we check our position from the opposite side
+                }
                 // check the piece at the current iteration
                 BasePiece piece = gamePieces[x, y];
 
@@ -107,6 +119,56 @@ public class GridManager : MonoBehaviour
                         gamePieces[x, y - 1] = piece;
                         SpawnPiece(x, y, PieceTypeEnum.EMPTY);
                         movedPiece = true;
+                    }
+                    else
+                    {
+                        // Diagonal checks
+                        for (int diag = -1; diag <= 1; diag++)
+                        {
+                            // if diag is 0, it's the piece directly below
+                            if (diag != 0)
+                            {
+                                int diagX = x + diag; // traverse to the right;
+                                if (inverse)
+                                {
+                                    diagX = x - diag; // traverse to the left
+                                }    
+                                 // if we're within the bounds of the grid, it's a valid position
+                                if (diagX >= 0 && diagX < gridX)
+                                {
+                                    BasePiece pieceAtDiagonal = gamePieces[diagX, y - 1];
+
+                                    if (pieceAtDiagonal.Type == PieceTypeEnum.EMPTY)
+                                    {
+                                        bool hasPieceAbove = true;
+                                        for (int aboveY = y; aboveY < gridY; aboveY++)
+                                        {
+                                            BasePiece pieceAbove = gamePieces[diagX, aboveY];
+                                            if (pieceAbove.isMovable()) // break the loop if the piece above is movable
+                                                break;
+                                            else if (!pieceAbove.isMovable() && pieceAbove.Type != PieceTypeEnum.EMPTY) // if this is a block type
+                                            { 
+                                                hasPieceAbove = false;
+                                                break;
+                                            } 
+                                        
+                                        }
+                                        if (!hasPieceAbove)
+                                        {
+                                            // Similar fill code from the top down, only to account for a diagonal transition
+                                            Destroy(pieceAtDiagonal.gameObject);
+                                            piece.MovablePiece.MovePiece(diagX, y - 1, fillTime);
+                                            gamePieces[diagX, y - 1] = piece;
+                                            SpawnPiece(x, y, PieceTypeEnum.EMPTY);
+                                            movedPiece = true;
+                                            break;
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+
                     }
                 }
             }

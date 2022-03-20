@@ -10,3 +10,8 @@ Author: TinyWorlds
 file: colored blocks sketchy
 https://opengameart.org/content/colored-blocks-sketchy
 License: CC0
+
+Author: Santoniche
+file: Rock Blocks
+https://opengameart.org/content/rock-blocks
+Licence: CC-BY 4.0
