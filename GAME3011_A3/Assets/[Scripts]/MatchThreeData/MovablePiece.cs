@@ -45,6 +45,8 @@ public class MovablePiece : MonoBehaviour
         }
 
         piece.transform.position = endPos;
+        
+
     }
 
 

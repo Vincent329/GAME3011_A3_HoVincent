@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class BasePiece : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerClickHandler
+public class BasePiece : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler
 {
 
     [SerializeField] private int xPos;
@@ -20,7 +20,7 @@ public class BasePiece : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, 
         set
         {
             if (isMovable())
-            yPos = value;
+            xPos = value;
         }
     }
     public int YPos
@@ -43,14 +43,14 @@ public class BasePiece : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, 
     private GridManager gridRef;
     public GridManager GridRef => gridRef;
 
-    private MovablePiece movablePiece;
-    public MovablePiece MovablePiece => movablePiece;
+    private MovablePiece movementPiece;
+    public MovablePiece MovementPiece => movementPiece;
 
     private PieceSprites pieceSprite;
     public PieceSprites PieceSprite => pieceSprite;
     private void Awake()
     {
-        movablePiece = GetComponent<MovablePiece>();
+        movementPiece = GetComponent<MovablePiece>();
         pieceSprite = GetComponent<PieceSprites>();
     }
     // Start is called before the first frame update
@@ -69,23 +69,11 @@ public class BasePiece : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, 
 
     public void OnPointerEnter(PointerEventData evt)
     {
-        Debug.Log("Enter " + XPos + "," + YPos);
         gridRef.HoverPiece(this);
-        isHovered = true;
-    }
-    public void OnPointerExit(PointerEventData evt)
-    {
-        isHovered = false;
-    }
-
-    public void OnPointerClick(PointerEventData evt)
-    {
-        Debug.Log("Click");
     }
 
     public void OnPointerDown(PointerEventData evt)
     {
-        Debug.Log("Clicked on Piece: " + XPos + "," + YPos);
         gridRef.PressPiece(this);
     }
 
@@ -94,10 +82,9 @@ public class BasePiece : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, 
         gridRef.ReleasePiece();
     }
 
-
     public bool isMovable()
     {
-        return movablePiece != null;
+        return movementPiece != null;
     }
 
     public bool IsColored()

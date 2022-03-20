@@ -87,7 +87,7 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        // placing obbstacles
+        // placing obstacles
         PlaceBlocks();
 
         StartCoroutine(Fill());
@@ -138,7 +138,7 @@ public class GridManager : MonoBehaviour
                     if (pieceBelow.Type == PieceTypeEnum.EMPTY)
                     {
                         Destroy(pieceBelow.gameObject);
-                        piece.MovablePiece.MovePiece(x, y - 1, fillTime);
+                        piece.MovementPiece.MovePiece(x, y - 1, fillTime);
                         gamePieces[x, y - 1] = piece;
                         SpawnPiece(x, y, PieceTypeEnum.EMPTY);
                         movedPiece = true;
@@ -180,7 +180,7 @@ public class GridManager : MonoBehaviour
                                         {
                                             // Similar fill code from the top down, only to account for a diagonal transition
                                             Destroy(pieceAtDiagonal.gameObject);
-                                            piece.MovablePiece.MovePiece(diagX, y - 1, fillTime);
+                                            piece.MovementPiece.MovePiece(diagX, y - 1, fillTime);
                                             gamePieces[diagX, y - 1] = piece;
                                             SpawnPiece(x, y, PieceTypeEnum.EMPTY);
                                             movedPiece = true;
@@ -209,7 +209,7 @@ public class GridManager : MonoBehaviour
 
                 gamePieces[x, gridY - 1] = newPiece.GetComponent<BasePiece>();
                 gamePieces[x, gridY - 1].Initialize(x, gridY, this, PieceTypeEnum.NORMAL);
-                gamePieces[x, gridY - 1].MovablePiece.MovePiece(x, gridY - 1, fillTime);
+                gamePieces[x, gridY - 1].MovementPiece.MovePiece(x, gridY - 1, fillTime);
                 gamePieces[x, gridY - 1].PieceSprite.SetType((PieceSprites.DiamondType)Random.Range(0, gamePieces[x, gridY - 1].PieceSprite.NumTypes));
                 movedPiece = true;
             }
@@ -234,7 +234,7 @@ public class GridManager : MonoBehaviour
     public bool adjacentPiece(BasePiece p1, BasePiece p2)
     {
         return (p1.XPos == p2.XPos && (int)Mathf.Abs(p1.YPos - p2.YPos) == 1// check if y coordinates are within 1 space of each other
-            || (p1.YPos == p1.YPos && (int)Mathf.Abs(p1.XPos - p2.YPos) == 1)); // check if x coordinates are 1 space away within each other 
+            || (p1.YPos == p2.YPos && (int)Mathf.Abs(p1.XPos - p2.XPos) == 1)); // check if x coordinates are 1 space away within each other 
     }
 
     public void SwapPieces(BasePiece p1, BasePiece p2)
@@ -247,14 +247,15 @@ public class GridManager : MonoBehaviour
             int p1XPos = p1.XPos;
             int p1YPos = p1.YPos;
 
-            p1.MovablePiece.MovePiece(p2.XPos, p2.YPos, fillTime);
-            p2.MovablePiece.MovePiece(p1XPos, p1YPos, fillTime);
+            p1.MovementPiece.MovePiece(p2.XPos, p2.YPos, fillTime);
+            p2.MovementPiece.MovePiece(p1XPos, p1YPos, fillTime);
         }
     }
 
     // Mouse Interaction Events
     public void PressPiece(BasePiece pieceSelect)
     {
+        Debug.Log("Piece: " + pieceSelect.XPos + "m" + pieceSelect.YPos);
         selectedPiece = pieceSelect;
     }
 
@@ -265,6 +266,7 @@ public class GridManager : MonoBehaviour
 
     public void ReleasePiece()
     {
+        Debug.Log(adjacentPiece(selectedPiece, lastEnteredPiece));
         if (adjacentPiece(selectedPiece, lastEnteredPiece))
         {
             SwapPieces(selectedPiece, lastEnteredPiece);
