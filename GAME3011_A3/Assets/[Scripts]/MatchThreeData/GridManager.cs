@@ -15,6 +15,7 @@ public class GridManager : MonoBehaviour
     // Grid Dimensions
     [SerializeField] private int gridX;
     [SerializeField] private int gridY;
+    [SerializeField] private float fillTime;
 
     // Pieces configuration
     [SerializeField] private List<PiecePrefab> piecePrefabs;
@@ -62,7 +63,7 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        Fill();
+        StartCoroutine(Fill());
     }
 
     public BasePiece SpawnPiece(int x, int y, PieceTypeEnum type)
@@ -77,32 +78,32 @@ public class GridManager : MonoBehaviour
     
     }
 
-    public void Fill()
+    public IEnumerator Fill()
     {
         while (FillStep())
         {
-
+            yield return new WaitForSeconds(fillTime);
         }
     }
     public bool FillStep()
     {
         bool movedPiece = false;
         // bottom to top check of the grid
-        for (int y = gridY - 2; y >= 0; y--)
+        for (int y = 1; y < gridY; y++)
         {
             for (int x = 0; x < gridX; x++)
             {
-                // check the piece at the current iteratrion
+                // check the piece at the current iteration
                 BasePiece piece = gamePieces[x, y];
 
                 // if it's movable, we check the piece under it
                 if (piece.isMovable())
                 {
-                    BasePiece pieceBelow = gamePieces[x, y + 1];
+                    BasePiece pieceBelow = gamePieces[x, y - 1];
                     if (pieceBelow.Type == PieceTypeEnum.EMPTY)
                     {
-                        piece.MovablePiece.MovePiece(x, y + 1);
-                        gamePieces[x, y + 1] = piece;
+                        piece.MovablePiece.MovePiece(x, y - 1);
+                        gamePieces[x, y - 1] = piece;
                         SpawnPiece(x, y, PieceTypeEnum.EMPTY);
                         movedPiece = true;
                     }
@@ -113,16 +114,16 @@ public class GridManager : MonoBehaviour
         // check the first row
         for (int x = 0; x < gridX; x++)
         {
-            BasePiece pieceBelow = gamePieces[x, 0];
+            BasePiece pieceBelow = gamePieces[x, gridY - 1];
             if (pieceBelow.Type == PieceTypeEnum.EMPTY)
             {
-                GameObject newPiece = Instantiate(piecePrefabDictionary[PieceTypeEnum.NORMAL], GetGridPosition(x, -1), Quaternion.identity);
+                GameObject newPiece = Instantiate(piecePrefabDictionary[PieceTypeEnum.NORMAL], GetGridPosition(x, gridY), Quaternion.identity);
                 newPiece.transform.SetParent(transform);
 
-                gamePieces[x, 0] = newPiece.GetComponent<BasePiece>();
-                gamePieces[x, 0].Initialize(x, -1, this, PieceTypeEnum.NORMAL);
-                gamePieces[x, 0].MovablePiece.MovePiece(x, 0);
-                gamePieces[x, 0].PieceSprite.SetType((PieceSprites.DiamondType)Random.Range(0, gamePieces[x, 0].PieceSprite.NumTypes));
+                gamePieces[x, gridY - 1] = newPiece.GetComponent<BasePiece>();
+                gamePieces[x, gridY - 1].Initialize(x, gridY, this, PieceTypeEnum.NORMAL);
+                gamePieces[x, gridY - 1].MovablePiece.MovePiece(x, gridY - 1);
+                gamePieces[x, gridY - 1].PieceSprite.SetType((PieceSprites.DiamondType)Random.Range(0, gamePieces[x, gridY - 1].PieceSprite.NumTypes));
                 movedPiece = true;
             }
         }
