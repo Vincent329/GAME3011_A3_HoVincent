@@ -102,7 +102,8 @@ public class GridManager : MonoBehaviour
                     BasePiece pieceBelow = gamePieces[x, y - 1];
                     if (pieceBelow.Type == PieceTypeEnum.EMPTY)
                     {
-                        piece.MovablePiece.MovePiece(x, y - 1);
+                        Destroy(pieceBelow.gameObject);
+                        piece.MovablePiece.MovePiece(x, y - 1, fillTime);
                         gamePieces[x, y - 1] = piece;
                         SpawnPiece(x, y, PieceTypeEnum.EMPTY);
                         movedPiece = true;
@@ -117,12 +118,13 @@ public class GridManager : MonoBehaviour
             BasePiece pieceBelow = gamePieces[x, gridY - 1];
             if (pieceBelow.Type == PieceTypeEnum.EMPTY)
             {
+                Destroy(pieceBelow.gameObject);
                 GameObject newPiece = Instantiate(piecePrefabDictionary[PieceTypeEnum.NORMAL], GetGridPosition(x, gridY), Quaternion.identity);
                 newPiece.transform.SetParent(transform);
 
                 gamePieces[x, gridY - 1] = newPiece.GetComponent<BasePiece>();
                 gamePieces[x, gridY - 1].Initialize(x, gridY, this, PieceTypeEnum.NORMAL);
-                gamePieces[x, gridY - 1].MovablePiece.MovePiece(x, gridY - 1);
+                gamePieces[x, gridY - 1].MovablePiece.MovePiece(x, gridY - 1, fillTime);
                 gamePieces[x, gridY - 1].PieceSprite.SetType((PieceSprites.DiamondType)Random.Range(0, gamePieces[x, gridY - 1].PieceSprite.NumTypes));
                 movedPiece = true;
             }

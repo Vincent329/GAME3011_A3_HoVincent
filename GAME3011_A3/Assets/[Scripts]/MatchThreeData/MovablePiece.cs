@@ -6,7 +6,7 @@ public class MovablePiece : MonoBehaviour
 {
 
     private BasePiece piece;
-
+    private IEnumerator movingCoroutine; // coroutine within the movable piece
     private void Awake()
     {
         piece = GetComponent<BasePiece>();
@@ -17,14 +17,36 @@ public class MovablePiece : MonoBehaviour
         
     }
 
-    public void MovePiece(int x, int y)
+    public void MovePiece(int targetX, int targetY, float movementTime)
     {
 
-        Debug.Log("Moving Piece to " + x + "," + y);
-       
-        piece.XPos = x;
-        piece.YPos = y;
+        if (movingCoroutine != null)
+        {
+            StopCoroutine(movingCoroutine);
+        }
 
-        piece.GetComponent<RectTransform>().position = piece.GridRef.GetGridPosition(x, y);
+        movingCoroutine = MoveCoroutine(targetX, targetY, movementTime);
+        StartCoroutine(movingCoroutine);
+        
     }
+
+    private IEnumerator MoveCoroutine(int targetX, int targetY, float movementTime)
+    {
+        piece.XPos = targetX;
+        piece.YPos = targetY;
+
+        Vector3 startPos = transform.position;
+        Vector3 endPos = piece.GridRef.GetGridPosition(targetX, targetY);
+
+        for (float t = 0; t <= 1 * movementTime; t += Time.deltaTime)
+        {
+            piece.transform.position = Vector3.Lerp(startPos, endPos, t / movementTime);
+            yield return 0; 
+        }
+
+        piece.transform.position = endPos;
+    }
+
+
+
 }

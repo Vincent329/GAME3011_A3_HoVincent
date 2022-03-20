@@ -353,8 +353,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridX: 10
   gridY: 10
+  fillTime: 0.1
   piecePrefabs:
   - type: 0
+    prefab: {fileID: 2187995396800165784, guid: 59318c3288208254aa0ada6adddd7c94, type: 3}
+  - type: 1
     prefab: {fileID: 8426557538054224958, guid: 1dd94134ab3add44c9e16d4422abac2f, type: 3}
   backgroundSprite: {fileID: 906891485910633634, guid: 64e03203c3d4d3a419d37dc4b3e28eb5, type: 3}
 --- !u!1 &684676561
