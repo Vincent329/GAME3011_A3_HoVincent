@@ -4,17 +4,11 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    public enum PieceType
-    {
-        NORMAL,
-        COUNT
-    }
-
 
     [System.Serializable]
     public struct PiecePrefab
     {
-        public PieceType type;
+        public PieceTypeEnum type;
         public GameObject prefab;
     }
 
@@ -27,15 +21,15 @@ public class GridManager : MonoBehaviour
     [SerializeField] private GameObject backgroundSprite;
     private float spriteDimension;
 
-    private GameObject[,] gamePieces;
+    private BasePiece[,] gamePieces;
 
-    private Dictionary<PieceType, GameObject> piecePrefabDictionary;
+    private Dictionary<PieceTypeEnum, GameObject> piecePrefabDictionary;
 
     // Start is called before the first frame update
     void Start()
     {
         GameObject gridTile = null;
-        piecePrefabDictionary = new Dictionary<PieceType, GameObject>();
+        piecePrefabDictionary = new Dictionary<PieceTypeEnum, GameObject>();
 
         // instantiate the game pieces
         for (int i = 0; i < piecePrefabs.Count; i++)
@@ -57,16 +51,27 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        gamePieces = new GameObject[gridX, gridY];
+        gamePieces = new BasePiece[gridX, gridY];
 
         for (int i = 0; i < gridX; i++)
         {
             for (int j = 0; j < gridY; j++)
             {
-                gamePieces[i, j] = Instantiate(piecePrefabDictionary[PieceType.NORMAL], GetGridPosition(i, j), Quaternion.identity);
-                gamePieces[i, j].name = "Piece (" + i + "," + j + ")";
-                gamePieces[i, j].transform.SetParent(this.transform);
+                GameObject basePiece = Instantiate(piecePrefabDictionary[PieceTypeEnum.NORMAL], Vector3.zero, Quaternion.identity);
+                basePiece.name = "Piece (" + i + "," + j + ")";
+                basePiece.transform.SetParent(this.transform);
 
+                gamePieces[i, j] = basePiece.GetComponent<BasePiece>();
+                gamePieces[i, j].Initialize(i, j, this, PieceTypeEnum.NORMAL);
+
+                if (gamePieces[i, j].isMovable())
+                {
+                    gamePieces[i, j].MovablePiece.MovePiece(i, j);
+                }
+                if (gamePieces[i, j].IsColored())
+                {
+                    gamePieces[i, j].PieceSprite.SetType((PieceSprites.DiamondType)Random.Range(0, gamePieces[i,j].PieceSprite.NumTypes));
+                }
             }
         }
     }
@@ -83,7 +88,7 @@ public class GridManager : MonoBehaviour
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <returns></returns>
-    Vector2 GetGridPosition(int x, int y)
+    public Vector2 GetGridPosition(int x, int y)
     {
         Vector2 GridPos = new Vector2(transform.position.x - ((gridX / 2) * spriteDimension) + x * spriteDimension,
                                       transform.position.y - ((gridY / 2) * spriteDimension) + y * spriteDimension);

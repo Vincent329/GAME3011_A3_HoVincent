@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4871596614911426726}
   - component: {fileID: 6599074530758097438}
-  - component: {fileID: 2067276266281835599}
+  - component: {fileID: 490795675904208062}
   m_Layer: 5
   m_Name: BackgroundSprite
   m_TagString: Untagged
@@ -46,7 +46,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 906891485910633634}
   m_CullTransparentMesh: 1
---- !u!114 &2067276266281835599
+--- !u!114 &490795675904208062
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.3137255}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.39607844}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
