@@ -87,7 +87,7 @@ public class BasePiece : MonoBehaviour , IPointerDownHandler, IPointerUpHandler,
         return movementPiece != null;
     }
 
-    public bool IsColored()
+    public bool IsDiamond()
     {
         return pieceSprite != null;
     }

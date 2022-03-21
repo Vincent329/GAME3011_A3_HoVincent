@@ -36,13 +36,13 @@ public class GridManager : MonoBehaviour
     private void PlaceBlocks()
     {
         Destroy(gamePieces[4, 4].gameObject);
-        SpawnPiece(4, 4, PieceTypeEnum.BLOCK); 
+        SpawnPiece(4, 4, PieceTypeEnum.BLOCK);
 
         Destroy(gamePieces[8, 4].gameObject);
-        SpawnPiece(8, 4, PieceTypeEnum.BLOCK); 
+        SpawnPiece(8, 4, PieceTypeEnum.BLOCK);
 
         Destroy(gamePieces[5, 5].gameObject);
-        SpawnPiece(5, 5, PieceTypeEnum.BLOCK); 
+        SpawnPiece(5, 5, PieceTypeEnum.BLOCK);
 
         Destroy(gamePieces[0, 0].gameObject);
         SpawnPiece(0, 0, PieceTypeEnum.BLOCK);
@@ -102,7 +102,7 @@ public class GridManager : MonoBehaviour
         gamePieces[x, y].Initialize(x, y, this, type);
 
         return gamePieces[x, y];
-    
+
     }
 
     public IEnumerator Fill()
@@ -155,8 +155,8 @@ public class GridManager : MonoBehaviour
                                 if (inverse)
                                 {
                                     diagX = x - diag; // traverse to the left
-                                }    
-                                 // if we're within the bounds of the grid, it's a valid position
+                                }
+                                // if we're within the bounds of the grid, it's a valid position
                                 if (diagX >= 0 && diagX < gridX)
                                 {
                                     BasePiece pieceAtDiagonal = gamePieces[diagX, y - 1];
@@ -170,11 +170,11 @@ public class GridManager : MonoBehaviour
                                             if (pieceAbove.isMovable()) // break the loop if the piece above is movable
                                                 break;
                                             else if (!pieceAbove.isMovable() && pieceAbove.Type != PieceTypeEnum.EMPTY) // if this is a block type
-                                            { 
+                                            {
                                                 hasPieceAbove = false;
                                                 break;
-                                            } 
-                                        
+                                            }
+
                                         }
                                         if (!hasPieceAbove)
                                         {
@@ -244,11 +244,20 @@ public class GridManager : MonoBehaviour
             gamePieces[p1.XPos, p1.YPos] = p2;
             gamePieces[p2.XPos, p2.YPos] = p1;
 
-            int p1XPos = p1.XPos;
-            int p1YPos = p1.YPos;
+            if (CheckMatch(p1, p2.XPos, p2.YPos) != null || CheckMatch(p2, p1.XPos, p1.YPos) != null)
+            {
 
-            p1.MovementPiece.MovePiece(p2.XPos, p2.YPos, fillTime);
-            p2.MovementPiece.MovePiece(p1XPos, p1YPos, fillTime);
+                int p1XPos = p1.XPos;
+                int p1YPos = p1.YPos;
+
+                p1.MovementPiece.MovePiece(p2.XPos, p2.YPos, fillTime);
+                p2.MovementPiece.MovePiece(p1XPos, p1YPos, fillTime);
+            }
+            else
+            {
+                gamePieces[p1.XPos, p1.YPos] = p1;
+                gamePieces[p2.XPos, p2.YPos] = p2;
+            }
         }
     }
 
@@ -266,11 +275,244 @@ public class GridManager : MonoBehaviour
 
     public void ReleasePiece()
     {
-        Debug.Log(adjacentPiece(selectedPiece, lastEnteredPiece));
         if (adjacentPiece(selectedPiece, lastEnteredPiece))
         {
             SwapPieces(selectedPiece, lastEnteredPiece);
         }
+    }
 
+    public List<BasePiece> CheckMatch(BasePiece pieceToCheck, int newX, int newY)
+    {
+        if (pieceToCheck.IsDiamond())
+        {
+
+            // take the enumerator of the piece to check and store it as a local variable
+            PieceSprites.DiamondType diamond = pieceToCheck.PieceSprite.Type;
+            List<BasePiece> horizontalPieces = new List<BasePiece>(); // 
+            List<BasePiece> verticalPieces = new List<BasePiece>();
+            List<BasePiece> matchingPieces = new List<BasePiece>();
+
+            // --------- HORIZONTAL CHECK ----------
+            // for every adjacent piece that's the same color, will be added to the appropriate list;
+            // list will check for adjacent pieces checking up and doown
+            horizontalPieces.Add(pieceToCheck); // we know this piece will be in any potential match
+
+            // using the for loop to check which direction we're going
+            for (int horizontalDirection = 0; horizontalDirection <= 1; horizontalDirection++)
+            {
+                // checking how far away the adjacent piece is from central piece
+                for (int xOffset = 1; xOffset < gridX; xOffset++)
+                {
+                    int x;
+
+                    if (horizontalDirection == 0) // check left direction
+                    {
+                        x = newX - xOffset;
+                    }
+                    else // check right direction
+                    {
+                        x = newX + xOffset;
+                    }
+
+                    if (x < 0 || x >= gridX)
+                    {
+                        break; // break out of the horizontal check and continue
+                    }
+                    if (gamePieces[x, newY].IsDiamond() && gamePieces[x, newY].PieceSprite.Type == diamond)
+                    {
+                        // add to the list of horizontal pieces if we've found a match
+                        horizontalPieces.Add(gamePieces[x, newY]);
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+                }
+            }
+            // should we reach the minimum amount of checks for a match
+            if (horizontalPieces.Count >= 3)
+            {
+                for (int i = 0; i < horizontalPieces.Count; i++)
+                {
+                    matchingPieces.Add(horizontalPieces[i]);
+                }
+            }
+
+            // L and T shape check (FOR HORIZONTAL, CHECKING UPWARD VERTICALLY FOR EVERY PIECE IN THE HORIZONTAL PIECES LIST
+            if (horizontalPieces.Count >= 3)
+            {
+                // for every node in the horizontal match set in horizontal
+                // EXPERIMENTAL, ITERATING VIA FOREACH LOOP
+                // IF IT DOESN'T WORK, USE STANDARD FOR LOOP 
+                foreach (BasePiece horizontalMatch in horizontalPieces)
+                {
+                    for (int verticalDir = 0; verticalDir <= 1; verticalDir++)
+                    {
+                        for (int yOffset = 1; yOffset < gridY; yOffset++)
+                        {
+                            int y;
+
+                            if (verticalDir == 0)
+                            {
+                                y = newY - yOffset; // check downward;
+                            } else
+                            {
+                                y = newY + yOffset;
+                            }
+
+                            if (y < 0 || y >= gridY)
+                            {
+                                break;
+                            }
+
+                            if (gamePieces[horizontalMatch.XPos, y].IsDiamond() && gamePieces[horizontalMatch.XPos, y].PieceSprite.Type == diamond)
+                            {
+                                verticalPieces.Add(gamePieces[horizontalMatch.XPos,y]);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    if (verticalPieces.Count < 2)
+                    {
+                        verticalPieces.Clear();
+                    } else
+                    {
+                        Debug.Log("T or L found (HORIZONTAL)");
+
+                        //EXPERIMENTAL: FOREACH LOOP ITERATION
+                        foreach (BasePiece verticalPiece in verticalPieces)
+                        {
+                            matchingPieces.Add(verticalPiece);
+                        }
+                        break;
+                    }
+                }
+            }
+
+            if (matchingPieces.Count >= 3)
+            {
+                return matchingPieces;
+            }
+
+            // --------- VERTICAL CHECK ----------
+
+            // for every adjacent piece that's the same color, will be added to the appropriate list;
+            // list will check for adjacent pieces checking up and down
+            horizontalPieces.Clear();
+            verticalPieces.Clear();
+
+            verticalPieces.Add(pieceToCheck); // we know this piece will be in any potential match
+
+            // using the for loop to check which direction we're going
+            for (int verticalDirection = 0; verticalDirection <= 1; verticalDirection++)
+            {
+                // checking how far away the adjacent piece is from central piece
+                for (int yOffset = 1; yOffset < gridY; yOffset++)
+                {
+                    int y;
+
+                    if (verticalDirection == 0) // check going down
+                    {
+                        y = newY - yOffset;
+                    }
+                    else // check going up
+                    {
+                        y = newY + yOffset;
+                    }
+
+                    if (y < 0 || y >= gridY)
+                    {
+                        break; // break out of the horizontal check and continue
+                    }
+
+                    if (gamePieces[newX, y].IsDiamond() && gamePieces[newX, y].PieceSprite.Type == diamond)
+                    {
+                        // add to the list of horizontal pieces if we've found a match
+                        verticalPieces.Add(gamePieces[newX, y]);
+
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+                }
+            }
+
+            // should we reach the minimum amount of checks for a match
+            if (verticalPieces.Count >= 3)
+            {
+                for (int i = 0; i < verticalPieces.Count; i++)
+                {
+                    matchingPieces.Add(verticalPieces[i]);
+                }
+            }
+            // L and T shape check (Vertical)
+            if (verticalPieces.Count >= 3)
+            {
+                // for every node in the horizontal match set in horizontal
+                // EXPERIMENTAL, ITERATING VIA FOREACH LOOP
+                // IF IT DOESN'T WORK, USE STANDARD FOR LOOP 
+                foreach (BasePiece verticalMatch in verticalPieces)
+                {
+                    for (int horizontalDir = 0; horizontalDir <= 1; horizontalDir++)
+                    {
+                        for (int xOffset = 1; xOffset < gridX; xOffset++)
+                        {
+                            int x;
+
+                            if (horizontalDir == 0)
+                            {
+                                x = newX - xOffset; // check left;
+                            }
+                            else
+                            {
+                                x = newX + xOffset; // check right;
+                            }
+
+                            if (x < 0 || x >= gridX)
+                            {
+                                break;
+                            }
+
+                            if (gamePieces[x, verticalMatch.YPos].IsDiamond() && gamePieces[x, verticalMatch.YPos].PieceSprite.Type == diamond)
+                            {
+                                horizontalPieces.Add(gamePieces[x, verticalMatch.YPos]);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    if (horizontalPieces.Count < 2)
+                    {
+                        horizontalPieces.Clear();
+                    }
+                    else
+                    {
+                        Debug.Log("T or L found (VERTICAL)");
+
+                        //EXPERIMENTAL: FOREACH LOOP ITERATION
+                        foreach (BasePiece horizontalPiece in horizontalPieces)
+                        {
+                            matchingPieces.Add(horizontalPiece);
+                        }
+                        break;
+                    }
+                }
+            }
+
+
+            if (matchingPieces.Count >= 3)
+            {
+                return matchingPieces;
+            }
+        }
+        return null;
     }
 }

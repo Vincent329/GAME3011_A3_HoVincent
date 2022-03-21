@@ -46,8 +46,6 @@ public class PieceSprites : MonoBehaviour
     private void Awake()
     {
         sprite = GetComponent<Image>();
-        if (sprite != null)
-            Debug.Log("HasSprite");
 
         diamondSpriteDictionary = new Dictionary<DiamondType, Sprite>();
         for (int i = 0; i < diamondSprites.Count; i++)
@@ -66,17 +64,5 @@ public class PieceSprites : MonoBehaviour
         {
             sprite.sprite = diamondSpriteDictionary[diamondType];
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
