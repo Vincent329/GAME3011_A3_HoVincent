@@ -9,7 +9,6 @@ public class BasePiece : MonoBehaviour , IPointerDownHandler, IPointerUpHandler,
 
     [SerializeField] private int xPos;
     [SerializeField] private int yPos;
-    [SerializeField] private bool isHovered;
 
     public int XPos
     {
@@ -43,15 +42,22 @@ public class BasePiece : MonoBehaviour , IPointerDownHandler, IPointerUpHandler,
     private GridManager gridRef;
     public GridManager GridRef => gridRef;
 
+    // --------- PIECE COMPONENTS -----------
+
     private MovablePiece movementPiece;
     public MovablePiece MovementPiece => movementPiece;
 
     private PieceSprites pieceSprite;
     public PieceSprites PieceSprite => pieceSprite;
+
+    private ClearablePiece clearPieceComponent;
+    public ClearablePiece ClearPieceComponent => clearPieceComponent;
+    
     private void Awake()
     {
         movementPiece = GetComponent<MovablePiece>();
         pieceSprite = GetComponent<PieceSprites>();
+        clearPieceComponent = GetComponent<ClearablePiece>();
     }
     // Start is called before the first frame update
     void Start()
@@ -90,5 +96,10 @@ public class BasePiece : MonoBehaviour , IPointerDownHandler, IPointerUpHandler,
     public bool IsDiamond()
     {
         return pieceSprite != null;
+    }
+
+    public bool isClearable()
+    {
+        return clearPieceComponent != null;
     }
 }
