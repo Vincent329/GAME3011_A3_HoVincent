@@ -49,6 +49,7 @@ public class GridManager : MonoBehaviour
 
         Destroy(gamePieces[2, 9].gameObject);
         SpawnPiece(2, 9, PieceTypeEnum.BLOCK);
+
     }
 
     // Start is called before the first frame update
@@ -262,6 +263,19 @@ public class GridManager : MonoBehaviour
 
                 // once a valid swap has been made, we clear the potential matches
                 ClearPotentialMatches();
+
+                if (p1.Type == PieceTypeEnum.ROW_CLEAR || p1.Type == PieceTypeEnum.COLUMN_CLEAR)
+                {
+                    ClearPiece(p1.XPos, p1.YPos);
+                }
+                if (p2.Type == PieceTypeEnum.ROW_CLEAR || p2.Type == PieceTypeEnum.COLUMN_CLEAR)
+                {
+                    ClearPiece(p2.XPos, p2.YPos);
+                }
+
+                selectedPiece = null;
+                lastEnteredPiece = null;
+
                 StartCoroutine(Fill());
             }
             else
@@ -275,7 +289,6 @@ public class GridManager : MonoBehaviour
     // Mouse Interaction Events
     public void PressPiece(BasePiece pieceSelect)
     {
-        Debug.Log("Piece: " + pieceSelect.XPos + "m" + pieceSelect.YPos);
         selectedPiece = pieceSelect;
     }
 
@@ -536,13 +549,55 @@ public class GridManager : MonoBehaviour
 
                 if (match != null)
                 {
+                    PieceTypeEnum specialPieceType = PieceTypeEnum.COUNT; // the type of piece that we should spawn
+                    BasePiece randomPiece = match[Random.Range(0, match.Count)];
+                    int specialPieceLocationX = randomPiece.XPos;
+                    int specialPieceLocationY = randomPiece.YPos;
+                    
+                    // spawn a special piece if the match count  = 4
+                    if (match.Count == 4)
+                    {
+                        if (selectedPiece == null || lastEnteredPiece == null)
+                        {
+                            specialPieceType = (PieceTypeEnum)Random.Range((int)PieceTypeEnum.ROW_CLEAR, (int)PieceTypeEnum.COLUMN_CLEAR);
+                        } else if (selectedPiece.YPos == lastEnteredPiece.YPos)
+                        {
+                            specialPieceType = PieceTypeEnum.ROW_CLEAR;
+                        } else 
+                        {
+                            specialPieceType = PieceTypeEnum.COLUMN_CLEAR;
+                        }
+                    }
+
                     for (int i = 0; i < match.Count; i++)
                     {
                         if (ClearPiece(match[i].XPos, match[i].YPos))
                         {
                             filling = true;
+
+                            if (match[i] == selectedPiece || match[i] == lastEnteredPiece)
+                            {
+                                specialPieceLocationX = match[i].XPos;
+                                specialPieceLocationY = match[i].YPos;
+                            }
                         }
                     }
+                    
+                    if (specialPieceType != PieceTypeEnum.COUNT)
+                    {
+                        Destroy(gamePieces[specialPieceLocationX, specialPieceLocationY].gameObject);
+                        Debug.Log(specialPieceLocationX + ", " + specialPieceLocationY);
+                        BasePiece newPiece = SpawnPiece(specialPieceLocationX, specialPieceLocationY, specialPieceType);
+
+                        if ((specialPieceType == PieceTypeEnum.ROW_CLEAR 
+                            || specialPieceType == PieceTypeEnum.COLUMN_CLEAR)
+                            && newPiece.IsDiamond() && match[0].IsDiamond())
+                        {
+                            newPiece.PieceSprite.SetType(match[0].PieceSprite.Type);
+                        }
+
+                    }
+
                 }
             }        
         }

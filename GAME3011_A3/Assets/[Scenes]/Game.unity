@@ -180,12 +180,16 @@ MonoBehaviour:
     m_ActionName: Player/Interact[/Keyboard/e]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: e5289a8a-18a8-46b5-8063-78fa7a20b5e6
-    m_ActionName: Minigame/Select[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: c61b7359-2a9c-43ff-af24-c85e464b1308
     m_ActionName: Minigame/ReturnToPlayer[/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f4ea59d6-0d60-4bce-922a-9d648cae481a
+    m_ActionName: Minigame/Point[/Mouse/position,/Pen/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 14d7f031-df7a-4930-acc8-c083e389f856
+    m_ActionName: Minigame/Click[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -361,6 +365,10 @@ MonoBehaviour:
     prefab: {fileID: 8426557538054224958, guid: 1dd94134ab3add44c9e16d4422abac2f, type: 3}
   - type: 2
     prefab: {fileID: 2153976108231276817, guid: 3be320d6501602e4dabad6f61888dd47, type: 3}
+  - type: 3
+    prefab: {fileID: 4294164055941948815, guid: 919dc46b01cf3444bbf97499df775260, type: 3}
+  - type: 4
+    prefab: {fileID: 2253437142114174494, guid: d88795852571e8443b5570703a25487f, type: 3}
   backgroundSprite: {fileID: 906891485910633634, guid: 64e03203c3d4d3a419d37dc4b3e28eb5, type: 3}
 --- !u!1 &684676561
 GameObject:
@@ -1619,6 +1627,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: f4ea59d6-0d60-4bce-922a-9d648cae481a
     m_ActionName: Minigame/MouseLocation[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 14d7f031-df7a-4930-acc8-c083e389f856
+    m_ActionName: Minigame/Click[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Minigame
