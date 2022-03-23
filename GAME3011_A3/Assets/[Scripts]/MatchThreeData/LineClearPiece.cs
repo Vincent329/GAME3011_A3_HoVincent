@@ -9,17 +9,6 @@ public class LineClearPiece : ClearablePiece
 {
 
     public bool isRowType;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public override void ClearPiece()
     {
@@ -27,13 +16,11 @@ public class LineClearPiece : ClearablePiece
 
         if (isRowType)
         {
-            Debug.Log("Clear Row");
-            Debug.Log(piece);
+            
             piece.GridRef.ClearRow(piece.YPos);
         } else
         {
-            Debug.Log("Column Clear");
-            Debug.Log(piece);
+            
             piece.GridRef.ClearColumn(piece.XPos);
         }
     }

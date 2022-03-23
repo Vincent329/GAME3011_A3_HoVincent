@@ -6,5 +6,6 @@ public enum PieceTypeEnum
     BLOCK,
     ROW_CLEAR,
     COLUMN_CLEAR,
+    BOMB_CLEAR,
     COUNT
 }

@@ -569,6 +569,14 @@ public class GridManager : MonoBehaviour
                         }
                     }
 
+                    // spawn a bomb special piece if the match count >= 5
+                    if (match.Count >= 5)
+                    {
+                       
+                       specialPieceType = PieceTypeEnum.BOMB_CLEAR;
+                        
+                    }
+
                     for (int i = 0; i < match.Count; i++)
                     {
                         if (ClearPiece(match[i].XPos, match[i].YPos))
@@ -586,15 +594,16 @@ public class GridManager : MonoBehaviour
                     if (specialPieceType != PieceTypeEnum.COUNT)
                     {
                         Destroy(gamePieces[specialPieceLocationX, specialPieceLocationY].gameObject);
-                        Debug.Log(specialPieceLocationX + ", " + specialPieceLocationY);
                         BasePiece newPiece = SpawnPiece(specialPieceLocationX, specialPieceLocationY, specialPieceType);
 
                         if ((specialPieceType == PieceTypeEnum.ROW_CLEAR 
-                            || specialPieceType == PieceTypeEnum.COLUMN_CLEAR)
+                            || specialPieceType == PieceTypeEnum.COLUMN_CLEAR
+                            || specialPieceType == PieceTypeEnum.BOMB_CLEAR)
                             && newPiece.IsDiamond() && match[0].IsDiamond())
                         {
                             newPiece.PieceSprite.SetType(match[0].PieceSprite.Type);
                         }
+                        
 
                     }
 
@@ -630,6 +639,22 @@ public class GridManager : MonoBehaviour
         for (int y = 0; y < gridY; y++)
         {
             ClearPiece(column, y);
+        }
+    }
+
+    public void ClearBomb(int bombX, int bombY)
+    {
+        for (int i = -1; i <= 1; i++)
+        {
+            for (int j = -1; j <= 1; j++)
+            {
+            if ((bombX + i > 0 && bombX + i < gridX)
+                && (bombY + j > 0 && bombY + j < gridY))
+                {
+                    Debug.Log((bombX + i) + ", " + (bombY + j));
+                    ClearPiece(bombX + i, bombY + j);
+                }
+            }
         }
     }
 
