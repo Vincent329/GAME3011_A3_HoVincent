@@ -39,6 +39,7 @@ public class BasePiece : MonoBehaviour , IPointerDownHandler, IPointerUpHandler,
 
     public PieceTypeEnum Type => type;
 
+    [SerializeField]
     private GridManager gridRef;
     public GridManager GridRef => gridRef;
 

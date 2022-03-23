@@ -616,5 +616,21 @@ public class GridManager : MonoBehaviour
         return false;
     }
 
+    //---------- LINE CLEAR FUNCTIONS ------------
+    // if the piece we clear is of a line clear type, we update the board as such
+    public void ClearRow(int row)
+    {
+        for (int x = 0; x < gridX; x++)
+        {
+            ClearPiece(x, row);
+        }
+    }
+    public void ClearColumn(int column)
+    {
+        for (int y = 0; y < gridY; y++)
+        {
+            ClearPiece(column, y);
+        }
+    }
 
 }

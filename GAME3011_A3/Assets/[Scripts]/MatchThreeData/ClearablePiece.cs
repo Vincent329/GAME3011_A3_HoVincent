@@ -15,7 +15,7 @@ public class ClearablePiece : MonoBehaviour
     protected BasePiece piece;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         piece = GetComponent<BasePiece>();
     }
@@ -26,7 +26,7 @@ public class ClearablePiece : MonoBehaviour
         
     }
 
-    public void ClearPiece()
+    public virtual void ClearPiece()
     {
         isClearing = true;
         StartCoroutine(ClearCoroutine());

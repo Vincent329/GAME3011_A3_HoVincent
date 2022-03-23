@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 7006073008869015111}
   - component: {fileID: 4787829213639788470}
   - component: {fileID: 1903104988933984632}
+  - component: {fileID: 5792076844669971140}
   - component: {fileID: 2841779765714848179}
   - component: {fileID: 994621333944194545}
   - component: {fileID: 8583166971039968553}
-  - component: {fileID: 541448166706326399}
   - component: {fileID: 1903104988933984633}
   m_Layer: 5
   m_Name: RowClearBlockType
@@ -94,6 +94,20 @@ MonoBehaviour:
   - type: 4
     diamondSprite: {fileID: 874109081, guid: 0e578de3214e69b47bc873e8a61fd6cb, type: 3}
   sprite: {fileID: 0}
+--- !u!114 &5792076844669971140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4294164055941948815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3461f1886e1470a4f88f2e3d0f95df10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clearAnim: {fileID: 7400000, guid: f7e9f76fe1062454f8ff0eef150b369a, type: 2}
+  isRowType: 1
 --- !u!61 &2841779765714848179
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -158,19 +172,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &541448166706326399
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4294164055941948815}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1c1979e3dae9f249a742adcb75970dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clearAnim: {fileID: 7400000, guid: f7e9f76fe1062454f8ff0eef150b369a, type: 2}
 --- !u!95 &1903104988933984633
 Animator:
   serializedVersion: 4
