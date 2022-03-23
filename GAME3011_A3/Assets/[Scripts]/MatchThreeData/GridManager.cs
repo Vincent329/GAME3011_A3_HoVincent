@@ -33,6 +33,9 @@ public class GridManager : MonoBehaviour
 
     private Dictionary<PieceTypeEnum, GameObject> piecePrefabDictionary;
 
+    // Scoring Management
+    private int diamondMatches, rubyMatches, emeraldMatches, amethystMatches, gemMatches;
+
     private void PlaceBlocks()
     {
         Destroy(gamePieces[4, 4].gameObject);
@@ -302,10 +305,10 @@ public class GridManager : MonoBehaviour
         if (adjacentPiece(selectedPiece, lastEnteredPiece))
         {
             SwapPieces(selectedPiece, lastEnteredPiece);
-
         }
     }
 
+    // ------------- MATCHING AND CLEARING EVENTS -------------------
     public List<BasePiece> CheckMatch(BasePiece pieceToCheck, int newX, int newY)
     {
         if (pieceToCheck.IsDiamond())
@@ -572,9 +575,7 @@ public class GridManager : MonoBehaviour
                     // spawn a bomb special piece if the match count >= 5
                     if (match.Count >= 5)
                     {
-                       
-                       specialPieceType = PieceTypeEnum.BOMB_CLEAR;
-                        
+                       specialPieceType = PieceTypeEnum.BOMB_CLEAR;                       
                     }
 
                     for (int i = 0; i < match.Count; i++)

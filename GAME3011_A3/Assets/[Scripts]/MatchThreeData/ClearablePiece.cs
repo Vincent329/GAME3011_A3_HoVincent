@@ -26,6 +26,7 @@ public class ClearablePiece : MonoBehaviour
         
     }
 
+    // USE THIS CLEAR PIECE TO ADD TO THE GAME MANAGER
     public virtual void ClearPiece()
     {
         isClearing = true;
@@ -39,8 +40,41 @@ public class ClearablePiece : MonoBehaviour
         if (animController)
         {
             animController.Play(clearAnim.name);
+            addScoreToGameManager();
             yield return new WaitForSeconds(clearAnim.length);
             Destroy(gameObject);
+        }
+    }
+
+    private void addScoreToGameManager()
+    {
+        if (piece.PieceSprite.Type == PieceSprites.DiamondType.DIAMOND)
+        {
+            GameManager.Instance.DiamondAmount++;
+            Debug.Log("Diamonds: "+ GameManager.Instance.DiamondAmount);
+        } else if (piece.PieceSprite.Type == PieceSprites.DiamondType.RUBY)
+        {
+            GameManager.Instance.RubyAmount++;
+            Debug.Log("Rubies: " + GameManager.Instance.RubyAmount);
+
+        }
+        if (piece.PieceSprite.Type == PieceSprites.DiamondType.EMERALD)
+        {
+            GameManager.Instance.EmeraldAmount++;
+            Debug.Log("Emeralds: " + GameManager.Instance.EmeraldAmount);
+
+        }
+        else if (piece.PieceSprite.Type == PieceSprites.DiamondType.AMETHYST)
+        {
+            GameManager.Instance.AmethystAmount++;
+            Debug.Log("Amethysts: " + GameManager.Instance.AmethystAmount);
+
+        }
+        else if (piece.PieceSprite.Type == PieceSprites.DiamondType.GEM)
+        {
+            GameManager.Instance.GemAmount++;
+            Debug.Log("Gems: " + GameManager.Instance.GemAmount);
+
         }
     }
 }
