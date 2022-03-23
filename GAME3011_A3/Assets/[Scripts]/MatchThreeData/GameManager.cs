@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject gamePanelCanvas;
 
-    // Scoring Types
+    // ----------------- Scoring Types -------------------
     [SerializeField] private int diamondAmount;
     public int DiamondAmount
     {
@@ -65,9 +65,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     // ACTIVATES ON GAME STATE BEING TOGGLED
     public bool inGame;
+
+    // EVENTS TO COMMUNICATE TO THE BOARD
 
     private void Awake()
     {

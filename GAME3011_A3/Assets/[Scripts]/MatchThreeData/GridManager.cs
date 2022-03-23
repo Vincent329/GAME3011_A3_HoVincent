@@ -27,14 +27,15 @@ public class GridManager : MonoBehaviour
                                   // potential that more than 1 piece can fill an empty space
                                   // swap the direction tiles can fall down
 
+    // State check if the game is over, then don't interact with the grid
+    bool isGameOver = false;
+
     // Mouse events, when we click, we hold a reference to the piece
     private BasePiece selectedPiece;
     private BasePiece lastEnteredPiece;
 
+    // Dictionary for easier lookups of the piece prefabs
     private Dictionary<PieceTypeEnum, GameObject> piecePrefabDictionary;
-
-    // Scoring Management
-    private int diamondMatches, rubyMatches, emeraldMatches, amethystMatches, gemMatches;
 
     private void PlaceBlocks()
     {
@@ -55,8 +56,7 @@ public class GridManager : MonoBehaviour
 
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void InitializeBoard()
     {
         GameObject gridTile = null;
         piecePrefabDictionary = new Dictionary<PieceTypeEnum, GameObject>();
@@ -97,6 +97,29 @@ public class GridManager : MonoBehaviour
         StartCoroutine(Fill());
     }
 
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    private void OnEnable()
+    {
+        InitializeBoard();
+
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+       
+        for (int i = 0; i < transform.childCount;i++)
+        {
+
+            Destroy(transform.GetChild(i).gameObject);
+        }
+    }
+
     public BasePiece SpawnPiece(int x, int y, PieceTypeEnum type)
     {
         GameObject pieceToSpawn = Instantiate(piecePrefabDictionary[type], GetGridPosition(x, y), Quaternion.identity);
@@ -124,6 +147,7 @@ public class GridManager : MonoBehaviour
             needsRefilling = ClearPotentialMatches();
         }
     }
+
     public bool FillStep()
     {
         bool movedPiece = false;
@@ -250,6 +274,12 @@ public class GridManager : MonoBehaviour
 
     public void SwapPieces(BasePiece p1, BasePiece p2)
     {
+        if (isGameOver)
+        {
+            Debug.Log("Game's over, go home");
+            return;
+        }
+
         if (p1.isMovable() && p2.isMovable())
         {
             gamePieces[p1.XPos, p1.YPos] = p2;
@@ -290,6 +320,7 @@ public class GridManager : MonoBehaviour
     }
 
     // Mouse Interaction Events
+    // TODO: DON'T ACTIVATE THESE FUNCTIONS IF THE GAME IS OVER
     public void PressPiece(BasePiece pieceSelect)
     {
         selectedPiece = pieceSelect;
@@ -657,6 +688,17 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    // BIND FUNCTIONS TO GAME MANAGER DELEGATES
+    private void SetGameOver()
+    {
+        isGameOver = true;
+    }
+
+    private void ResetGrid()
+    {
+        isGameOver = false;
     }
 
 }
