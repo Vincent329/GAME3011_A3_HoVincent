@@ -38,23 +38,60 @@ public class GridManager : MonoBehaviour
 
     private void PlaceBlocks()
     {
-        Destroy(gamePieces[4, 4].gameObject);
-        SpawnPiece(4, 4, PieceTypeEnum.BLOCK);
+        if (GameManager.Instance.GameDifficulty == DifficultyEnum.HARD)
+        {
+            Destroy(gamePieces[4, 4].gameObject);
+            SpawnPiece(4, 4, PieceTypeEnum.BLOCK);
 
-        Destroy(gamePieces[8, 4].gameObject);
-        SpawnPiece(8, 4, PieceTypeEnum.BLOCK);
+            Destroy(gamePieces[8, 4].gameObject);
+            SpawnPiece(8, 4, PieceTypeEnum.BLOCK);
 
-        Destroy(gamePieces[5, 5].gameObject);
-        SpawnPiece(5, 5, PieceTypeEnum.BLOCK);
+            Destroy(gamePieces[5, 5].gameObject);
+            SpawnPiece(5, 5, PieceTypeEnum.BLOCK);
 
-        Destroy(gamePieces[0, 0].gameObject);
-        SpawnPiece(0, 0, PieceTypeEnum.BLOCK);
+            Destroy(gamePieces[0, 0].gameObject);
+            SpawnPiece(0, 0, PieceTypeEnum.BLOCK);
 
-        Destroy(gamePieces[2, 9].gameObject);
-        SpawnPiece(2, 9, PieceTypeEnum.BLOCK);
+            Destroy(gamePieces[2, 9].gameObject);
+            SpawnPiece(2, 9, PieceTypeEnum.BLOCK);
+            
+            Destroy(gamePieces[8, 7].gameObject);
+            SpawnPiece(8, 7, PieceTypeEnum.BLOCK);
 
+            Destroy(gamePieces[8, 8].gameObject);
+            SpawnPiece(8, 8, PieceTypeEnum.BLOCK);
+
+            Destroy(gamePieces[7, 7].gameObject);
+            SpawnPiece(7, 7, PieceTypeEnum.BLOCK);
+
+            Destroy(gamePieces[7, 8].gameObject);
+            SpawnPiece(7, 8, PieceTypeEnum.BLOCK);
+
+            Destroy(gamePieces[3, 2].gameObject);
+            SpawnPiece(3, 2, PieceTypeEnum.BLOCK);
+        }
+        else if (GameManager.Instance.GameDifficulty == DifficultyEnum.NORMAL)
+        {
+            Destroy(gamePieces[4, 4].gameObject);
+            SpawnPiece(4, 4, PieceTypeEnum.BLOCK);
+
+            Destroy(gamePieces[3, 4].gameObject);
+            SpawnPiece(3, 4, PieceTypeEnum.BLOCK);
+            Destroy(gamePieces[3, 2].gameObject);
+            SpawnPiece(3, 2, PieceTypeEnum.BLOCK);
+
+            Destroy(gamePieces[3, 3].gameObject);
+            SpawnPiece(3, 3, PieceTypeEnum.BLOCK);
+
+            Destroy(gamePieces[8, 7].gameObject);
+            SpawnPiece(8, 7, PieceTypeEnum.BLOCK);
+
+            Destroy(gamePieces[7, 7].gameObject);
+            SpawnPiece(7, 7, PieceTypeEnum.BLOCK);
+
+
+        }
     }
-
     private void InitializeBoard()
     {
         GameObject gridTile = null;

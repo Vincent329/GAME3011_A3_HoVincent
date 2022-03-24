@@ -2407,20 +2407,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '
-
-    As Most Match 3 games go, your goal is to match sets of three object
+  m_text: "\nAs Most Match 3 games go, your goal is to match sets of three object
     types to score match points.  The goal for this game is to match and clear a
-    certain amount of jewels within a set amount of time in order to win
-
-
-    Controls:
-
-    Use
-    your mouse to hover your cursor over a jewel, then click and drag your mouse
-    a unit up, down, left or right from your selection to attempt a match.  Release
-    the mouse buttton over an adjacent space to attempt a match.  If a match is valid,
-    the jewels will move and clear a set of either 3, 4 or 5 matches'
+    certain amount of jewels within a set amount of time in order to win\n\nControls:\n-
+    Use your mouse to hover your cursor over a jewel\n- Click and drag your mouse
+    a unit up, down, left or right from your selection then release the mouse buttton
+    over the  adjacent space to attempt a match.  \n- If a match is valid, the jewels
+    will move and clear a set of either 3, 4 or 5 matches"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3678,7 +3671,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -259, y: -182.6}
+  m_AnchoredPosition: {x: -259, y: -192}
   m_SizeDelta: {x: 425, y: 49.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1321199487
@@ -4503,7 +4496,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 370, y: 92}
+  m_AnchoredPosition: {x: 370, y: 64}
   m_SizeDelta: {x: 425, y: 219.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1704404730
@@ -4526,7 +4519,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Rules:\n\nThe goal of the game is to match sets of jewels in 3s, 4s, or
+  m_text: "Rules:\nThe goal of the game is to match sets of jewels in 3s, 4s, or
     5s and either in a vertical or horizontal orientation. \n\n Score is incremented
     for each individual jewel you remove from the board.  Clear 50 of each jewel
     (depending on difficulty requirements) before the timer expires to win.  Matching
