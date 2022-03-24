@@ -13,17 +13,16 @@ public class GameManager : MonoBehaviour
         get => instance;
     }
 
+    // Match 3 panel
     [SerializeField] private GameObject gamePanelCanvas;
+    [SerializeField] private GameObject difficultySelectPanel;
 
     // ----------------- Scoring Types -------------------
     [SerializeField] private int diamondAmount;
     public int DiamondAmount
     {
         get => diamondAmount;
-        set
-        {
-            diamondAmount = value;
-        }
+        set{ diamondAmount = value;  }
     }
     [SerializeField] private int diamondLimit;
 
@@ -31,10 +30,7 @@ public class GameManager : MonoBehaviour
     public int RubyAmount
     {
         get => rubyAmount;
-        set
-        {
-            rubyAmount = value;
-        }
+        set { rubyAmount = value; }
     }
     [SerializeField] private int rubyLimit;
 
@@ -42,10 +38,7 @@ public class GameManager : MonoBehaviour
     public int EmeraldAmount
     {
         get => emeraldAmount;
-        set
-        {
-            emeraldAmount = value;
-        }
+        set { emeraldAmount = value; }
     }
     [SerializeField] private int emeraldLimit;
 
@@ -53,10 +46,7 @@ public class GameManager : MonoBehaviour
     public int AmethystAmount
     {
         get => amethystAmount;
-        set
-        {
-            amethystAmount = value;
-        }
+        set{ amethystAmount = value;  }
     }
     [SerializeField] private int amethystLimit;
 
@@ -64,10 +54,7 @@ public class GameManager : MonoBehaviour
     public int GemAmount
     {
         get => gemAmount;
-        set
-        {
-            gemAmount = value;
-        }
+        set { gemAmount = value; }
     }
     [SerializeField] private int gemLimit;
 
@@ -77,12 +64,32 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI emeraldScoreText;
     [SerializeField] private TextMeshProUGUI amethystScoreText;
     [SerializeField] private TextMeshProUGUI gemScoreText;
+    [SerializeField] private GameObject amethystDisplay;
+    [SerializeField] private GameObject gemDisplay;
+    
+
     public float initialStartTimer;
+    [SerializeField] private TextMeshProUGUI timerText;
 
     // ACTIVATES ON GAME STATE BEING TOGGLED
     public bool inGame;
 
-    // EVENTS TO COMMUNICATE TO THE BOARD
+    [SerializeField]
+    private DifficultyEnum gameDifficulty;
+    public DifficultyEnum GameDifficulty => gameDifficulty;
+
+    // --------------EVENTS TO COMMUNICATE TO THE BOARD------------------
+    public delegate void DifficultySet();
+    public event DifficultySet StartAtDifficulty;
+
+    public delegate void WinGame();
+    public event WinGame Win;
+
+    public delegate void LoseGame();
+    public event LoseGame Lose;
+
+    public delegate void ResetGame();
+    public event ResetGame Reset;
 
     private void Awake()
     {
@@ -99,8 +106,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        //gamePanelCanvas.SetActive(false);
-        ResetGame();
+        inGame = false;
+        gamePanelCanvas.SetActive(false);
+        difficultySelectPanel.SetActive(false);
+        ResetScore();
     }
 
     public void TogglePanel()
@@ -108,7 +117,7 @@ public class GameManager : MonoBehaviour
         gamePanelCanvas.SetActive(gamePanelCanvas.activeInHierarchy ? false : true) ;
     }
 
-    public void ResetGame()
+    public void ResetScore()
     {
         diamondAmount = 0;
         rubyAmount = 0;
@@ -129,6 +138,20 @@ public class GameManager : MonoBehaviour
         emeraldScoreText.text = emeraldAmount + "/" + emeraldLimit;
         amethystScoreText.text = amethystAmount + "/" + amethystLimit;
         gemScoreText.text = gemAmount + "/" + gemLimit;
+    }
+
+    public void ToggleDifficultyPanel(bool isEntered)
+    {
+        inGame = isEntered;
+        difficultySelectPanel.SetActive(inGame);
+    }
+
+    public void DifficultyChange(DifficultyEnum targetDifficulty)
+    {
+        inGame = true;
+        gameDifficulty = targetDifficulty;
+        difficultySelectPanel.SetActive(false);
+        StartAtDifficulty();
     }
 }
 

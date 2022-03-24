@@ -25,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
             playerActions.Player.Movement.performed += OnMovement;
             playerActions.Player.Movement.canceled += OnMovement;
             playerActions.Player.Interact.started += OnInteract;
+            GameManager.Instance.StartAtDifficulty += StartMinigame;
         }
     }
 
@@ -33,6 +34,8 @@ public class PlayerMovement : MonoBehaviour
         playerActions.Player.Movement.performed -= OnMovement;
         playerActions.Player.Movement.canceled -= OnMovement;
         playerActions.Player.Interact.started -= OnInteract;
+        GameManager.Instance.StartAtDifficulty -= StartMinigame;
+
 
     }
     // Start is called before the first frame update
@@ -50,6 +53,8 @@ public class PlayerMovement : MonoBehaviour
         playerActions.Player.Movement.performed += OnMovement;
         playerActions.Player.Movement.canceled += OnMovement;
         playerActions.Player.Interact.started += OnInteract;
+
+        GameManager.Instance.StartAtDifficulty += StartMinigame;
     }
 
     // Update is called once per frame
@@ -64,11 +69,18 @@ public class PlayerMovement : MonoBehaviour
         playerVelocity = new Vector3(movementVector.x, 0, movementVector.y);
     }
 
+    private void StartMinigame()
+    {
+        GameManager.Instance.TogglePanel();
+        playerVelocity = Vector3.zero; // zero out the velocity of the player
+        InputManager.ToggleActionMap(playerActions.Minigame);
+    }
+
     private void OnInteract(InputAction.CallbackContext obj)
     {
         Debug.Log("Switching to Match 3");
         // CALL THESE TWO FUNCTIONS
-        GameManager.Instance.TogglePanel();
-        InputManager.ToggleActionMap(playerActions.Minigame);
+        StartMinigame();
+
     }
 }

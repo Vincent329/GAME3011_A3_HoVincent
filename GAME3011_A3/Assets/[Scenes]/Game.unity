@@ -272,6 +272,7 @@ GameObject:
   - component: {fileID: 131464557}
   - component: {fileID: 131464556}
   - component: {fileID: 131464555}
+  - component: {fileID: 131464558}
   m_Layer: 5
   m_Name: Hard
   m_TagString: Untagged
@@ -382,6 +383,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 131464553}
   m_CullTransparentMesh: 1
+--- !u!114 &131464558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131464553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e5b474bf5e84254f9c4da1af006df72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  difficulttyEnum: 2
 --- !u!1 &287546128
 GameObject:
   m_ObjectHideFlags: 0
@@ -714,8 +728,9 @@ GameObject:
   - component: {fileID: 318994349}
   - component: {fileID: 318994348}
   - component: {fileID: 318994347}
+  - component: {fileID: 318994350}
   m_Layer: 5
-  m_Name: Medium
+  m_Name: Normal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -824,6 +839,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 318994345}
   m_CullTransparentMesh: 1
+--- !u!114 &318994350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 318994345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e5b474bf5e84254f9c4da1af006df72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  difficulttyEnum: 1
 --- !u!1 &371898500
 GameObject:
   m_ObjectHideFlags: 0
@@ -902,7 +930,7 @@ GameObject:
   - component: {fileID: 379018700}
   - component: {fileID: 379018699}
   m_Layer: 5
-  m_Name: Image (2)
+  m_Name: Emerald
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1215,7 +1243,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Medium
+  m_text: 'Normal
 
 '
   m_isRightToLeft: 0
@@ -1306,6 +1334,7 @@ GameObject:
   - component: {fileID: 761517295}
   - component: {fileID: 761517294}
   - component: {fileID: 761517293}
+  - component: {fileID: 761517296}
   m_Layer: 5
   m_Name: Easy
   m_TagString: Untagged
@@ -1416,6 +1445,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 761517291}
   m_CullTransparentMesh: 1
+--- !u!114 &761517296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 761517291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e5b474bf5e84254f9c4da1af006df72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  difficulttyEnum: 0
 --- !u!1 &826111016
 GameObject:
   m_ObjectHideFlags: 0
@@ -2135,7 +2177,7 @@ GameObject:
   - component: {fileID: 1033620952}
   - component: {fileID: 1033620951}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: Ruby
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2558,18 +2600,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gamePanelCanvas: {fileID: 1469858757}
+  difficultySelectPanel: {fileID: 2069422191}
   diamondAmount: 0
+  diamondLimit: 50
   rubyAmount: 0
+  rubyLimit: 50
   emeraldAmount: 0
+  emeraldLimit: 50
   amethystAmount: 0
+  amethystLimit: 50
   gemAmount: 0
-  diamondScoreText: {fileID: 0}
-  rubyScoreText: {fileID: 0}
-  emeraldScoreText: {fileID: 0}
-  amethystScoreText: {fileID: 0}
-  gemScoreText: {fileID: 0}
-  initialStartTimer: 0
+  gemLimit: 50
+  diamondScoreText: {fileID: 1724826317}
+  rubyScoreText: {fileID: 1255561180}
+  emeraldScoreText: {fileID: 1649529283}
+  amethystScoreText: {fileID: 1913565958}
+  gemScoreText: {fileID: 892543221}
+  amethystDisplay: {fileID: 1336491794}
+  gemDisplay: {fileID: 1469074485}
+  initialStartTimer: 60
+  timerText: {fileID: 0}
   inGame: 0
+  gameDifficulty: 0
 --- !u!4 &1311883926
 Transform:
   m_ObjectHideFlags: 0
@@ -2634,7 +2686,7 @@ GameObject:
   - component: {fileID: 1336491797}
   - component: {fileID: 1336491796}
   m_Layer: 5
-  m_Name: Image (3)
+  m_Name: Amethyst
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2807,7 +2859,7 @@ GameObject:
   - component: {fileID: 1469074488}
   - component: {fileID: 1469074487}
   m_Layer: 5
-  m_Name: Image (4)
+  m_Name: Gem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2830,7 +2882,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 50, y: -179}
+  m_AnchoredPosition: {x: 49.99997, y: -179}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1469074487
@@ -2890,7 +2942,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1469858758
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3343,7 +3395,7 @@ GameObject:
   - component: {fileID: 1757405114}
   - component: {fileID: 1757405113}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Diamond
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3635,7 +3687,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2069422192
 RectTransform:
   m_ObjectHideFlags: 0
