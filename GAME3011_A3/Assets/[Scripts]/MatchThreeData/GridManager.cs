@@ -91,7 +91,7 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        // placing obstacles
+        // placing obstacles... change upon difficulty
         PlaceBlocks();
 
         StartCoroutine(Fill());
@@ -100,7 +100,7 @@ public class GridManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        GameManager.Instance.Lose += ClearBoard;
     }
 
     private void OnEnable()
@@ -111,9 +111,17 @@ public class GridManager : MonoBehaviour
 
     private void OnDisable()
     {
+        GameManager.Instance.Lose -= ClearBoard;
+
+        ClearBoard();
+
+    }
+
+    private void ClearBoard()
+    {
         StopAllCoroutines();
-       
-        for (int i = 0; i < transform.childCount;i++)
+
+        for (int i = 0; i < transform.childCount; i++)
         {
 
             Destroy(transform.GetChild(i).gameObject);

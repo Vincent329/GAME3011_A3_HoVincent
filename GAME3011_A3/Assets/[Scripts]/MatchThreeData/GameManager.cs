@@ -67,9 +67,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject amethystDisplay;
     [SerializeField] private GameObject gemDisplay;
     
-
     public float initialStartTimer;
-    [SerializeField] private TextMeshProUGUI timerText;
 
     // ACTIVATES ON GAME STATE BEING TOGGLED
     public bool inGame;
@@ -117,6 +115,11 @@ public class GameManager : MonoBehaviour
         gamePanelCanvas.SetActive(gamePanelCanvas.activeInHierarchy ? false : true) ;
     }
 
+    public void InvokeLoseGame()
+    {
+        Lose();
+    }
+
     public void ResetScore()
     {
         diamondAmount = 0;
@@ -151,6 +154,36 @@ public class GameManager : MonoBehaviour
         inGame = true;
         gameDifficulty = targetDifficulty;
         difficultySelectPanel.SetActive(false);
+
+        if (gameDifficulty == DifficultyEnum.EASY)
+        {
+            diamondScoreText.gameObject.SetActive(true);      
+            rubyScoreText.gameObject.SetActive(true);
+            emeraldScoreText.gameObject.SetActive(true);
+            amethystScoreText.gameObject.SetActive(false);
+            gemScoreText.gameObject.SetActive(false);
+
+            initialStartTimer = 10;
+        }
+        else if (gameDifficulty == DifficultyEnum.NORMAL)
+        {
+            diamondScoreText.gameObject.SetActive(true);
+            rubyScoreText.gameObject.SetActive(true);
+            emeraldScoreText.gameObject.SetActive(true);
+            amethystScoreText.gameObject.SetActive(true);
+            gemScoreText.gameObject.SetActive(false);
+            initialStartTimer = 20;
+        } 
+        else if (gameDifficulty == DifficultyEnum.HARD)
+        {
+            diamondScoreText.gameObject.SetActive(true);
+            rubyScoreText.gameObject.SetActive(true);
+            emeraldScoreText.gameObject.SetActive(true);
+            amethystScoreText.gameObject.SetActive(true);
+            gemScoreText.gameObject.SetActive(true);
+            initialStartTimer = 30;
+        }
+        ResetScore();
         StartAtDifficulty();
     }
 }
