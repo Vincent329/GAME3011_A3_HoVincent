@@ -680,8 +680,8 @@ public class GridManager : MonoBehaviour
         {
             for (int j = -1; j <= 1; j++)
             {
-            if ((bombX + i > 0 && bombX + i < gridX)
-                && (bombY + j > 0 && bombY + j < gridY))
+            if ((bombX + i >= 0 && bombX + i < gridX)
+                && (bombY + j >= 0 && bombY + j < gridY))
                 {
                     Debug.Log((bombX + i) + ", " + (bombY + j));
                     ClearPiece(bombX + i, bombY + j);

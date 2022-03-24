@@ -67,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnInteract(InputAction.CallbackContext obj)
     {
         Debug.Log("Switching to Match 3");
+        // CALL THESE TWO FUNCTIONS
         GameManager.Instance.TogglePanel();
         InputManager.ToggleActionMap(playerActions.Minigame);
     }

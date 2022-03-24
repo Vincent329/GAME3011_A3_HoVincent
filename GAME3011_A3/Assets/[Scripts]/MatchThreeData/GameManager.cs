@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-
     private static GameManager instance;
     public static GameManager Instance
     {
@@ -25,8 +25,9 @@ public class GameManager : MonoBehaviour
             diamondAmount = value;
         }
     }
-    [SerializeField] private int rubyAmount;
+    [SerializeField] private int diamondLimit;
 
+    [SerializeField] private int rubyAmount;
     public int RubyAmount
     {
         get => rubyAmount;
@@ -35,6 +36,7 @@ public class GameManager : MonoBehaviour
             rubyAmount = value;
         }
     }
+    [SerializeField] private int rubyLimit;
 
     [SerializeField] private int emeraldAmount;
     public int EmeraldAmount
@@ -45,8 +47,9 @@ public class GameManager : MonoBehaviour
             emeraldAmount = value;
         }
     }
-    [SerializeField] private int amethystAmount;
+    [SerializeField] private int emeraldLimit;
 
+    [SerializeField] private int amethystAmount;
     public int AmethystAmount
     {
         get => amethystAmount;
@@ -55,6 +58,8 @@ public class GameManager : MonoBehaviour
             amethystAmount = value;
         }
     }
+    [SerializeField] private int amethystLimit;
+
     [SerializeField] private int gemAmount;
     public int GemAmount
     {
@@ -64,6 +69,15 @@ public class GameManager : MonoBehaviour
             gemAmount = value;
         }
     }
+    [SerializeField] private int gemLimit;
+
+    // ---------- Text Displays -------------------
+    [SerializeField] private TextMeshProUGUI diamondScoreText;
+    [SerializeField] private TextMeshProUGUI rubyScoreText;
+    [SerializeField] private TextMeshProUGUI emeraldScoreText;
+    [SerializeField] private TextMeshProUGUI amethystScoreText;
+    [SerializeField] private TextMeshProUGUI gemScoreText;
+    public float initialStartTimer;
 
     // ACTIVATES ON GAME STATE BEING TOGGLED
     public bool inGame;
@@ -86,7 +100,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         //gamePanelCanvas.SetActive(false);
-        Reset();
+        ResetGame();
     }
 
     public void TogglePanel()
@@ -94,13 +108,27 @@ public class GameManager : MonoBehaviour
         gamePanelCanvas.SetActive(gamePanelCanvas.activeInHierarchy ? false : true) ;
     }
 
-    public void Reset()
+    public void ResetGame()
     {
         diamondAmount = 0;
         rubyAmount = 0;
         emeraldAmount = 0;
         amethystAmount = 0;
         gemAmount = 0;
+        diamondScoreText.text = diamondAmount + "/" + diamondLimit; 
+        rubyScoreText.text = rubyAmount + "/" + rubyLimit; 
+        emeraldScoreText.text = emeraldAmount + "/" + emeraldLimit; 
+        amethystScoreText.text = amethystAmount + "/" + amethystLimit; 
+        gemScoreText.text = gemAmount + "/" + gemLimit; 
+    }
+
+    public void UpdateText()
+    {
+        diamondScoreText.text = diamondAmount + "/" + diamondLimit;
+        rubyScoreText.text = rubyAmount + "/" + rubyLimit;
+        emeraldScoreText.text = emeraldAmount + "/" + emeraldLimit;
+        amethystScoreText.text = amethystAmount + "/" + amethystLimit;
+        gemScoreText.text = gemAmount + "/" + gemLimit;
     }
 }
 
