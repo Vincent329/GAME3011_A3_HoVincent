@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
         get => instance;
     }
 
-    // Match 3 panel
+    // Match 3 and Difficulty Select panel
     [SerializeField] private GameObject gamePanelCanvas;
     [SerializeField] private GameObject difficultySelectPanel;
 
@@ -66,15 +66,21 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI gemScoreText;
     [SerializeField] private GameObject amethystDisplay;
     [SerializeField] private GameObject gemDisplay;
+    [SerializeField] private TextMeshProUGUI winText;
+    [SerializeField] private TextMeshProUGUI loseText;
     
     public float initialStartTimer;
 
     // ACTIVATES ON GAME STATE BEING TOGGLED
-    public bool inGame;
+    public bool inGameTrigger;
+    public bool didGameFinish;
 
     [SerializeField]
     private DifficultyEnum gameDifficulty;
     public DifficultyEnum GameDifficulty => gameDifficulty;
+
+    // Audio Source for SFX
+    private AudioSource audioSource;
 
     // --------------EVENTS TO COMMUNICATE TO THE BOARD------------------
     public delegate void DifficultySet();
@@ -85,9 +91,6 @@ public class GameManager : MonoBehaviour
 
     public delegate void LoseGame();
     public event LoseGame Lose;
-
-    public delegate void ResetGame();
-    public event ResetGame Reset;
 
     private void Awake()
     {
@@ -104,24 +107,30 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        inGame = false;
+        audioSource = GetComponent<AudioSource>();
+        inGameTrigger = false;
+        didGameFinish = false;
         gamePanelCanvas.SetActive(false);
         difficultySelectPanel.SetActive(false);
-        ResetScore();
+        ResetGameState();
     }
 
     public void TogglePanel()
     {
         gamePanelCanvas.SetActive(gamePanelCanvas.activeInHierarchy ? false : true) ;
     }
-
+    
     public void InvokeLoseGame()
     {
+        DisplayLoseText();
         Lose();
     }
 
-    public void ResetScore()
+    public void ResetGameState()
     {
+        winText.gameObject.SetActive(false);
+        loseText.gameObject.SetActive(false);
+        didGameFinish = false;
         diamondAmount = 0;
         rubyAmount = 0;
         emeraldAmount = 0;
@@ -145,13 +154,13 @@ public class GameManager : MonoBehaviour
 
     public void ToggleDifficultyPanel(bool isEntered)
     {
-        inGame = isEntered;
-        difficultySelectPanel.SetActive(inGame);
+        inGameTrigger = isEntered;
+        difficultySelectPanel.SetActive(inGameTrigger);
     }
 
     public void DifficultyChange(DifficultyEnum targetDifficulty)
     {
-        inGame = true;
+        inGameTrigger = true;
         gameDifficulty = targetDifficulty;
         difficultySelectPanel.SetActive(false);
 
@@ -162,8 +171,12 @@ public class GameManager : MonoBehaviour
             emeraldScoreText.gameObject.SetActive(true);
             amethystScoreText.gameObject.SetActive(false);
             gemScoreText.gameObject.SetActive(false);
-
-            initialStartTimer = 10;
+            amethystDisplay.SetActive(false);
+            gemDisplay.SetActive(false);
+            diamondLimit = 40;
+            rubyLimit = 40;
+            emeraldLimit = 40;
+            initialStartTimer = 40;
         }
         else if (gameDifficulty == DifficultyEnum.NORMAL)
         {
@@ -172,7 +185,13 @@ public class GameManager : MonoBehaviour
             emeraldScoreText.gameObject.SetActive(true);
             amethystScoreText.gameObject.SetActive(true);
             gemScoreText.gameObject.SetActive(false);
-            initialStartTimer = 20;
+            amethystDisplay.SetActive(true);
+            gemDisplay.SetActive(false);
+            diamondLimit = 50;
+            rubyLimit = 50;
+            emeraldLimit = 50;
+            amethystLimit = 50;
+            initialStartTimer = 60;
         } 
         else if (gameDifficulty == DifficultyEnum.HARD)
         {
@@ -181,10 +200,71 @@ public class GameManager : MonoBehaviour
             emeraldScoreText.gameObject.SetActive(true);
             amethystScoreText.gameObject.SetActive(true);
             gemScoreText.gameObject.SetActive(true);
-            initialStartTimer = 30;
+            amethystDisplay.SetActive(true);
+            gemDisplay.SetActive(true);
+            diamondLimit = 60;
+            rubyLimit = 60;
+            emeraldLimit = 60;
+            amethystLimit = 60;
+            gemLimit = 60;
+
+            initialStartTimer = 75;
         }
-        ResetScore();
+        ResetGameState();
         StartAtDifficulty();
+    }
+
+    public void CheckWinCondition()
+    {
+        if (gameDifficulty == DifficultyEnum.EASY)
+        {
+            if (diamondAmount >= diamondLimit && rubyAmount >= rubyLimit && emeraldAmount >= emeraldLimit)
+            {
+                Debug.Log("Win");
+                didGameFinish = true;
+                DisplayWinText();
+                Win();
+            }
+        }
+        else
+        if (gameDifficulty == DifficultyEnum.NORMAL)
+        {
+            if (diamondAmount >= diamondLimit && rubyAmount >= rubyLimit && emeraldAmount >= emeraldLimit && amethystAmount >= amethystLimit)
+            {
+                Debug.Log("Win");
+                didGameFinish = true;
+                DisplayWinText();
+                Win();
+            }
+        }
+        else
+        if (gameDifficulty == DifficultyEnum.HARD)
+        {
+            if (diamondAmount >= diamondLimit && rubyAmount >= rubyLimit && emeraldAmount >= emeraldLimit && amethystAmount >= amethystLimit && gemAmount >= gemLimit)
+            {
+                Debug.Log("Win");
+                didGameFinish = true;
+                DisplayWinText();
+                Win();
+            }
+        }
+    }
+
+    public void PlaySFX()
+    {
+        audioSource.Play();
+    }
+
+    public void DisplayWinText()
+    {
+        winText.gameObject.SetActive(true);
+
+    }
+
+    public void DisplayLoseText()
+    {
+        loseText.gameObject.SetActive(true);
+
     }
 }
 

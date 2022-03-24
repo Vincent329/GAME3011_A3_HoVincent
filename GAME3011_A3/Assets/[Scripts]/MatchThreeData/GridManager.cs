@@ -28,7 +28,6 @@ public class GridManager : MonoBehaviour
                                   // swap the direction tiles can fall down
 
     // State check if the game is over, then don't interact with the grid
-    bool isGameOver = false;
 
     // Mouse events, when we click, we hold a reference to the piece
     private BasePiece selectedPiece;
@@ -112,7 +111,6 @@ public class GridManager : MonoBehaviour
     private void OnDisable()
     {
         GameManager.Instance.Lose -= ClearBoard;
-
         ClearBoard();
 
     }
@@ -282,7 +280,7 @@ public class GridManager : MonoBehaviour
 
     public void SwapPieces(BasePiece p1, BasePiece p2)
     {
-        if (isGameOver)
+        if (GameManager.Instance.didGameFinish)
         {
             Debug.Log("Game's over, go home");
             return;
@@ -591,6 +589,7 @@ public class GridManager : MonoBehaviour
 
                 if (match != null)
                 {
+                    GameManager.Instance.PlaySFX();
                     PieceTypeEnum specialPieceType = PieceTypeEnum.COUNT; // the type of piece that we should spawn
                     BasePiece randomPiece = match[Random.Range(0, match.Count)];
                     int specialPieceLocationX = randomPiece.XPos;
@@ -643,7 +642,7 @@ public class GridManager : MonoBehaviour
                         {
                             newPiece.PieceSprite.SetType(match[0].PieceSprite.Type);
                         }
-                        
+
 
                     }
 
@@ -684,29 +683,16 @@ public class GridManager : MonoBehaviour
 
     public void ClearBomb(int bombX, int bombY)
     {
-        for (int i = -1; i <= 1; i++)
+        for (int i = -2; i <= 2; i++)
         {
-            for (int j = -1; j <= 1; j++)
+            for (int j = -2; j <= 2; j++)
             {
             if ((bombX + i >= 0 && bombX + i < gridX)
                 && (bombY + j >= 0 && bombY + j < gridY))
                 {
-                    Debug.Log((bombX + i) + ", " + (bombY + j));
                     ClearPiece(bombX + i, bombY + j);
                 }
             }
         }
     }
-
-    // BIND FUNCTIONS TO GAME MANAGER DELEGATES
-    private void SetGameOver()
-    {
-        isGameOver = true;
-    }
-
-    private void ResetGrid()
-    {
-        isGameOver = false;
-    }
-
 }

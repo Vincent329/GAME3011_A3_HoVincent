@@ -51,8 +51,4 @@ public class GameController : MonoBehaviour
         InputManager.ToggleActionMap(playerActions.Player);
     }
 
-    private void OnMouseLocation(InputAction.CallbackContext obj)
-    {
-
-    }
 }

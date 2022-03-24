@@ -24,7 +24,6 @@ public class PlayerMovement : MonoBehaviour
         {
             playerActions.Player.Movement.performed += OnMovement;
             playerActions.Player.Movement.canceled += OnMovement;
-            playerActions.Player.Interact.started += OnInteract;
             GameManager.Instance.StartAtDifficulty += StartMinigame;
         }
     }
@@ -33,7 +32,6 @@ public class PlayerMovement : MonoBehaviour
     {
         playerActions.Player.Movement.performed -= OnMovement;
         playerActions.Player.Movement.canceled -= OnMovement;
-        playerActions.Player.Interact.started -= OnInteract;
         GameManager.Instance.StartAtDifficulty -= StartMinigame;
 
 
@@ -52,7 +50,6 @@ public class PlayerMovement : MonoBehaviour
         elementIsActive = true;
         playerActions.Player.Movement.performed += OnMovement;
         playerActions.Player.Movement.canceled += OnMovement;
-        playerActions.Player.Interact.started += OnInteract;
 
         GameManager.Instance.StartAtDifficulty += StartMinigame;
     }
@@ -75,12 +72,5 @@ public class PlayerMovement : MonoBehaviour
         playerVelocity = Vector3.zero; // zero out the velocity of the player
         InputManager.ToggleActionMap(playerActions.Minigame);
     }
-
-    private void OnInteract(InputAction.CallbackContext obj)
-    {
-        Debug.Log("Switching to Match 3");
-        // CALL THESE TWO FUNCTIONS
-        StartMinigame();
-
-    }
+    
 }

@@ -5,7 +5,8 @@ using UnityEngine;
 public class TriggerGame : MonoBehaviour
 {
     bool playerIsIn;
-
+    [SerializeField]
+    GameObject playerInstructionsText;
     private void Start()
     {
         playerIsIn = false;
@@ -16,8 +17,10 @@ public class TriggerGame : MonoBehaviour
         if (other.gameObject.GetComponent<PlayerMovement>() != null)
         {
             playerIsIn = true;
+            playerInstructionsText.SetActive(false);
             GameManager.Instance.ToggleDifficultyPanel(true);
         }
+
     }
 
     //private void OnTriggerStay(Collider other)
@@ -38,6 +41,8 @@ public class TriggerGame : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         playerIsIn = false;
+        playerInstructionsText.SetActive(true);
+
         GameManager.Instance.ToggleDifficultyPanel(false);
     }
 

@@ -70,6 +70,8 @@ public class ClearablePiece : MonoBehaviour
         {
             GameManager.Instance.GemAmount++;
         }
+        GameManager.Instance.CheckWinCondition();
+
         GameManager.Instance.UpdateText();
     }
 }
